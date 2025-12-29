@@ -1,0 +1,638 @@
+/* ====== Global reset ====== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: #000;
+  overflow: hidden; /* JS in App.jsx can override to auto on homepage */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  color: #f9fafb;
+}
+
+/* ====== Intro root wrapper ====== */
+
+.intro-root {
+  position: fixed;
+  inset: 0;
+  background: #000;
+}
+
+/* =========================================
+   Typing intro
+========================================= */
+
+.intro-typing {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* no interaction during intro */
+  z-index: 10;
+}
+
+.intro-typing-inner {
+  max-width: 90vw;
+  text-align: left;
+  font-family: Helvetica, Verdana, sans-serif;
+}
+
+.intro-line {
+  margin: 0;
+  padding: 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+/* Latin line: high contrast */
+.intro-line--latin {
+  color: #e5e7eb;
+}
+
+/* English translation: slightly dimmer */
+.intro-line--english {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #9ca3af;
+}
+
+/* Cursor style */
+.intro-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 0.25rem;
+  background: #f9fafb;
+  border-radius: 0;
+  animation: intro-cursor-blink 0.9s steps(1) infinite;
+}
+
+/* Shared cursor blink */
+@keyframes intro-cursor-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* =========================================
+   (Optional) Intro terminal variant
+========================================= */
+
+.intro-hold-overlay {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-hold-overlay--done {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease-out;
+}
+
+.intro-terminal {
+  width: 100%;
+  max-width: 90vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-terminal__line {
+  display: inline-flex;
+  align-items: center;
+  font-family: Helvetica, Verdana, sans-serif;
+  font-size: clamp(1.2rem, 2.4vw, 2rem);
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.intro-terminal__text {
+  font-family: Helvetica, Verdana, sans-serif;
+}
+
+/* Small, real-style caret cursor for the new intro */
+.intro-terminal__cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 4px;
+  background: #ffffff;
+  animation: intro-cursor-blink 0.9s steps(1) infinite;
+}
+
+/* =========================================
+   Portal reveal
+========================================= */
+
+.portal-shell {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+  clip-path: circle(0px at center);
+  transition: clip-path 3.5s ease-in-out;
+  z-index: 1;
+}
+
+.portal-shell--open {
+  clip-path: circle(150% at center);
+}
+
+.portal-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-color: #000;
+}
+
+/* =========================================
+   BYCREAIR HOMEPAGE – MINIMAL FUTURISTIC
+========================================= */
+
+.byc-home {
+  position: relative;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #020617 0, #020617 45%, #020617 100%);
+  color: #e5e7eb;
+  overflow: hidden;
+}
+
+/* Soft background accents */
+.byc-home-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.byc-home-orbit {
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  border-radius: 999px;
+  filter: blur(40px);
+  opacity: 0.35;
+}
+
+/* Left glow – slow drifting animation */
+.byc-home-orbit--left {
+  top: -120px;
+  left: -80px;
+  background: radial-gradient(circle at 30% 20%, #38bdf8, transparent 60%);
+  animation: byc-orbit-left 26s ease-in-out infinite alternate;
+}
+
+/* Right glow – slightly different loop */
+.byc-home-orbit--right {
+  bottom: -160px;
+  right: -60px;
+  background: radial-gradient(circle at 70% 60%, #a855f7, transparent 65%);
+  animation: byc-orbit-right 32s ease-in-out infinite alternate;
+}
+
+/* Keyframes for drifting, breathing glows */
+@keyframes byc-orbit-left {
+  0% {
+    transform: translate3d(-40px, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(20px, 30px, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(10px, -20px, 0) scale(1.12);
+  }
+}
+
+@keyframes byc-orbit-right {
+  0% {
+    transform: translate3d(30px, 10px, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-20px, -25px, 0) scale(1.06);
+  }
+  100% {
+    transform: translate3d(-60px, 15px, 0) scale(1.1);
+  }
+}
+
+.byc-home-shell {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.byc-home-main {
+  flex: 1;
+  padding: 2.5rem clamp(1.5rem, 4vw, 5rem) 3.5rem;
+}
+
+@media (max-width: 900px) {
+  .byc-home-main {
+    padding: 2rem 1.5rem 3rem;
+  }
+}
+
+/* =========================================
+   NAVBAR – MINIMAL, FULL-WIDTH
+========================================= */
+
+.main-navbar {
+  position: relative;
+  z-index: 10;
+  /* Horizontal padding so nav breathes from the edges */
+  padding: 1.25rem clamp(1.5rem, 4vw, 3.5rem) 0.75rem;
+}
+
+.main-navbar-inner {
+  width: 100%;
+  margin: 0;
+  padding: 0.5rem 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+}
+
+/* Brand on the left */
+.main-navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.main-navbar-brand {
+  font-size: 0.85rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #e5e7eb;
+}
+
+/* Links row – a bit more spread */
+.main-navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 2.25rem;
+  font-size: 0.8rem;
+}
+
+/* Text-only links */
+.main-navbar-link {
+  position: relative;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  cursor: pointer;
+  font: inherit;
+  transition: color 0.16s ease, opacity 0.16s ease;
+}
+
+/* Minimal gradient underline on hover */
+.main-navbar-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.2rem;
+  height: 1px;
+  background: linear-gradient(90deg, #38bdf8, #a855f7);
+  opacity: 0;
+  transform: scaleX(0.6);
+  transform-origin: center;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.main-navbar-link:hover {
+  color: #e5e7eb;
+}
+
+.main-navbar-link:hover::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Disabled / coming soon item */
+.main-navbar-link--disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.main-navbar-link--disabled::after {
+  display: none;
+}
+
+/* COMING SOON mini label */
+.main-navbar-link-soon {
+  margin-left: 0.3rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #93c5fd;
+}
+
+/* Spacer to balance layout (ok to keep even if mostly empty) */
+.main-navbar-right {
+  width: 40px;
+}
+
+/* Mobile: hide inline links for now */
+@media (max-width: 900px) {
+  .main-navbar-inner {
+    gap: 0.9rem;
+  }
+
+  .main-navbar-links {
+    display: none;
+  }
+}
+
+/* =========================================
+   HERO – CLEAN TWO-COLUMN
+========================================= */
+
+.byc-hero {
+  max-width: 1120px;
+  margin: 0 auto 3.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 3.1fr) minmax(0, 2.1fr);
+  gap: 3.25rem;
+  align-items: flex-start;
+}
+
+@media (max-width: 900px) {
+  .byc-hero {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+.byc-hero-copy {
+  max-width: 580px;
+}
+
+.byc-hero-eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9ca3af;
+  margin-bottom: 0.9rem;
+}
+
+.byc-hero-title {
+  font-size: clamp(2.4rem, 3.8vw, 3.1rem);
+  line-height: 1.05;
+  margin: 0 0 1rem;
+  color: #f9fafb;
+}
+
+.byc-hero-title-accent {
+  background: linear-gradient(120deg, #38bdf8, #a855f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.byc-hero-lead {
+  font-size: 0.98rem;
+  line-height: 1.8;
+  color: #cbd5f5;
+  margin-bottom: 1.7rem;
+}
+
+.byc-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+/* Buttons */
+
+.byc-btn {
+  border-radius: 999px;
+  padding: 0.7rem 1.5rem;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: transform 0.16s ease, box-shadow 0.16s ease,
+    background 0.16s ease, color 0.16s ease, border-color 0.16s ease;
+  white-space: nowrap;
+}
+
+.byc-btn-primary {
+  background: radial-gradient(
+    circle at 30% 0%,
+    #38bdf8,
+    #0ea5e9 45%,
+    #1d4ed8 85%
+  );
+  color: #f9fafb;
+  box-shadow: 0 20px 55px rgba(37, 99, 235, 0.75);
+}
+
+.byc-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 26px 70px rgba(37, 99, 235, 0.95);
+}
+
+.byc-btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(148, 163, 184, 0.9);
+  color: #e5e7eb;
+}
+
+.byc-btn-ghost:hover {
+  border-color: #38bdf8;
+  color: #f9fafb;
+}
+
+/* Little “status strip” under the buttons */
+
+.byc-hero-note {
+  margin-top: 0.9rem;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.byc-hero-note-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, #38bdf8, #1d4ed8);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.9);
+}
+
+/* =========================================
+   HERO META – MINIMAL LIST WITH FUTURE EDGE
+========================================= */
+
+.byc-hero-meta {
+  border-left: 1px solid rgba(55, 65, 81, 1);
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .byc-hero-meta {
+    border-left: none;
+    border-top: 1px solid rgba(31, 41, 55, 1);
+    padding-left: 0;
+    padding-top: 1.4rem;
+  }
+}
+
+.byc-hero-meta-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.byc-meta-label {
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
+.byc-meta-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: #e5e7eb;
+}
+
+/* =========================================
+   THREE-COLUMN SECTIONS – CLEAN LISTS
+========================================= */
+
+.byc-section-list {
+  max-width: 1120px;
+  margin: 0 auto 3rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .byc-section-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .byc-section-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.byc-section {
+  border-top: 1px solid rgba(55, 65, 81, 1);
+  padding-top: 1.2rem;
+}
+
+.byc-section-title {
+  margin: 0 0 0.4rem;
+  font-size: 1.02rem;
+  color: #e5e7eb;
+}
+
+.byc-section-body {
+  margin: 0 0 0.8rem;
+  font-size: 0.92rem;
+  color: #9ca3af;
+  line-height: 1.7;
+}
+
+.byc-section-list-items {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.9rem;
+  color: #cbd5f5;
+}
+
+.byc-section-list-items li + li {
+  margin-top: 0.25rem;
+}
+
+/* =========================================
+   BOTTOM STRIP
+========================================= */
+
+.byc-strip {
+  max-width: 1120px;
+  margin: 0 auto 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(31, 41, 55, 1);
+}
+
+.byc-strip-text {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+.byc-strip-pill {
+  border-radius: 999px;
+  padding: 0.2rem 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+  color: #e5e7eb;
+}
+
+.byc-strip-dot {
+  opacity: 0.75;
+}
