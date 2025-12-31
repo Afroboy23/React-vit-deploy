@@ -268,7 +268,7 @@ function SystemsPage() {
                         "Reputation management system",
                         "Trust and proof placement",
                         "Campaign design assets",
-                        "Visual identity refinement"
+                        "Logo Design & Visual Identity"
                       ].map((item, i) => (
                         <motion.li variants={listItemVariants} key={i} className="flex items-start gap-3 text-white/80 font-light">
                           <span className="text-cyan/70 mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
@@ -302,8 +302,8 @@ function SystemsPage() {
                     items: ["Monthly improvements", "Conversion refinements", "Continuous iteration"]
                   },
                   {
-                    title: "Content & SEO",
-                    items: ["Page copy refinement", "SEO content briefs", "Publishing support"]
+                    title: "Creative Production",
+                    items: ["Photography & Direction", "High-End Videography", "SEO Copywriting"]
                   }
                 ].map((addon, i) => (
                   <motion.div
