@@ -1,6 +1,6 @@
-// src/components/Navbar.jsx
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Studio Navigation Structure
 const NAV_ITEMS = [
@@ -11,13 +11,21 @@ const NAV_ITEMS = [
 ];
 
 function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  // Close menu when route changes
+  React.useEffect(() => {
+    setIsOpen(false);
+  }, [location]);
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 py-8 transition-all duration-500 bg-gradient-to-b from-black/80 to-transparent backdrop-blur-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 sm:px-8">
         {/* Brand */}
         <Link
           to="/"
-          className="text-xs font-semibold tracking-[0.2em] uppercase text-white transition-opacity hover:opacity-80"
+          className="text-xs font-semibold tracking-[0.2em] uppercase text-white transition-opacity hover:opacity-80 z-50"
         >
           ByCreair
         </Link>
@@ -55,10 +63,55 @@ function Navbar() {
 
 
         {/* Mobile menu trigger */}
-        <button className="flex flex-col gap-1.5 md:hidden group">
-          <span className="h-px w-6 bg-white/80 transition-all group-hover:w-8 group-hover:bg-cyan-400"></span>
-          <span className="h-px w-6 bg-white/80 transition-all group-hover:w-4 group-hover:bg-cyan-400"></span>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex flex-col gap-1.5 md:hidden group z-50"
+        >
+          <motion.span
+            animate={isOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+            className="h-px w-6 bg-white transition-all"
+          />
+          <motion.span
+            animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
+            className="h-px w-6 bg-white transition-all"
+          />
+          <motion.span
+            animate={isOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
+            className="h-px w-6 bg-white transition-all"
+          />
         </button>
+
+        {/* Mobile Menu Overlay */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="fixed inset-0 bg-black/95 backdrop-blur-xl z-40 flex items-center justify-center md:hidden"
+            >
+              <nav className="flex flex-col items-center gap-8">
+                {NAV_ITEMS.map((item) => (
+                  <Link
+                    key={item.label}
+                    to={item.path}
+                    onClick={(e) => item.badge && e.preventDefault()}
+                    className={`text-xl font-light uppercase tracking-[0.2em] ${item.badge ? "text-white/30" : "text-white hover:text-cyan"
+                      }`}
+                  >
+                    {item.label} {item.badge && <span className="text-[0.6em] text-cyan align-top ml-2">{item.badge}</span>}
+                  </Link>
+                ))}
+                <Link
+                  to="/builder"
+                  className="mt-8 px-8 py-3 border border-white/20 rounded-full text-sm uppercase tracking-[0.2em] text-white hover:border-cyan text-cyan"
+                >
+                  Get Started
+                </Link>
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );

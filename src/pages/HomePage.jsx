@@ -56,8 +56,8 @@ function HomePage() {
   });
 
   return (
-    // SCROLL TRACK: 600vh height gives us "time" to scroll through 6 scenes
-    <div ref={containerRef} className="relative h-[600vh] bg-black text-white/90 selection:bg-white/10 selection:text-white">
+    // SCROLL TRACK: 600vh height gives us "time" to scroll through 6 scenes (reduced to 400vh on mobile)
+    <div ref={containerRef} className="relative h-[400vh] md:h-[600vh] bg-black text-white/90 selection:bg-white/10 selection:text-white">
 
       {/* FIXED VIEWPORT: The window into the experience */}
       <div className="sticky top-0 h-screen overflow-hidden">
@@ -68,8 +68,8 @@ function HomePage() {
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div className="ethereal-gradient absolute inset-0 opacity-50" />
 
-          {/* Living Vortex Animation - Full Screen Drift */}
-          <div className="absolute inset-0 overflow-hidden opacity-60">
+          {/* Living Vortex Animation - Full Screen Drift (Desktop Only for Performance) */}
+          <div className="absolute inset-0 overflow-hidden opacity-60 hidden md:block">
             {/* Layer 1: Deep Nebula Base */}
             <motion.div
               className="absolute -top-[50%] -left-[50%] w-[200%] h-[200%] bg-gradient-to-tr from-indigo-900/40 via-purple-900/30 to-cyan-900/10 rounded-full blur-[120px]"
