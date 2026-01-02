@@ -235,7 +235,7 @@ function HomePage() {
           <Scene scrollYProgress={scrollYProgress} start={0.66} end={0.83}>
             <div className="text-center">
               <h2 className="text-4xl sm:text-6xl font-light text-white mb-12">
-                Ready when you are.
+                Upgrade Your Brand Presence.
               </h2>
               <Link
                 to="/builder"
