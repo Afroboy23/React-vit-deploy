@@ -4,6 +4,8 @@ import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 import imgShowreel from "../assets/showreel-preview.png";
+import vidAnimation from "../assets/bycreair-animation.mov";
+import vidLanding from "../assets/bycreair-landing.mp4";
 
 // Helper for Scene Transitions
 // visibleRange: [start, end] of scroll progress (0-1) where this section is active
@@ -151,11 +153,6 @@ function HomePage() {
           {/* SCENE 3: WORK (33% - 50%) */}
           <Scene scrollYProgress={scrollYProgress} start={0.33} end={0.5}>
 
-
-            import vidAnimation from "../assets/bycreair-animation.mov";
-            import vidLanding from "../assets/bycreair-landing.mp4";
-
-            // ... inside the Scene component for the Work section:
 
             <div className="grid md:grid-cols-2 gap-12 items-center w-full max-w-5xl">
               <div className="space-y-8">
