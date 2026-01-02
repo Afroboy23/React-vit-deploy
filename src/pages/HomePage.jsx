@@ -152,6 +152,11 @@ function HomePage() {
           <Scene scrollYProgress={scrollYProgress} start={0.33} end={0.5}>
 
 
+            import vidAnimation from "../assets/bycreair-animation.mov";
+            import vidLanding from "../assets/bycreair-landing.mp4";
+
+            // ... inside the Scene component for the Work section:
+
             <div className="grid md:grid-cols-2 gap-12 items-center w-full max-w-5xl">
               <div className="space-y-8">
                 <h2 className="text-xs uppercase tracking-[0.3em] text-cyan">Selected Work</h2>
@@ -165,53 +170,92 @@ function HomePage() {
                   View Portfolio
                 </Link>
               </div>
-              <motion.div
-                className="aspect-video bg-white/5 rounded-lg border border-white/10 overflow-hidden relative group cursor-pointer perspective-1000"
-                whileHover="hover"
-                initial="initial"
-                onMouseMove={(e) => {
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  const x = e.clientX - rect.left; // x position within the element.
-                  const y = e.clientY - rect.top;  // y position within the element.
-                  const centerX = rect.width / 2;
-                  const centerY = rect.height / 2;
 
-                  // Rotate X (tilt up/down) - inverted y
-                  const rotateX = ((y - centerY) / centerY) * -5;
-                  // Rotate Y (tilt left/right)
-                  const rotateY = ((x - centerX) / centerX) * 5;
-
-                  e.currentTarget.style.setProperty("--rotateX", `${rotateX}deg`);
-                  e.currentTarget.style.setProperty("--rotateY", `${rotateY}deg`);
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.setProperty("--rotateX", `0deg`);
-                  e.currentTarget.style.setProperty("--rotateY", `0deg`);
-                }}
-                style={{
-                  transform: "perspective(1000px) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg))",
-                  transition: "transform 0.1s ease-out"
-                }}
-              >
-                {/* Sheen Effect */}
+              <div className="space-y-6">
+                {/* Video 1: Animation */}
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent z-20 pointer-events-none"
-                  variants={{
-                    initial: { x: "-100%" },
-                    hover: { x: "100%", transition: { repeat: Infinity, duration: 1.5, ease: "linear" } }
+                  className="aspect-video bg-white/5 rounded-lg border border-white/10 overflow-hidden relative group cursor-pointer perspective-1000"
+                  whileHover="hover"
+                  initial="initial"
+                  onMouseMove={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -5;
+                    const rotateY = ((x - centerX) / centerX) * 5;
+                    e.currentTarget.style.setProperty("--rotateX", `${rotateX}deg`);
+                    e.currentTarget.style.setProperty("--rotateY", `${rotateY}deg`);
                   }}
-                />
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.setProperty("--rotateX", `0deg`);
+                    e.currentTarget.style.setProperty("--rotateY", `0deg`);
+                  }}
+                  style={{
+                    transform: "perspective(1000px) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg))",
+                    transition: "transform 0.1s ease-out"
+                  }}
+                >
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent z-20 pointer-events-none"
+                    variants={{
+                      initial: { x: "-100%" },
+                      hover: { x: "100%", transition: { repeat: Infinity, duration: 1.5, ease: "linear" } }
+                    }}
+                  />
+                  <video
+                    src={vidAnimation}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                  />
+                </motion.div>
 
-                <div className="absolute inset-0 bg-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity z-10 mix-blend-overlay" />
-
-                <motion.img
-                  src={imgShowreel}
-                  alt="Showreel Preview"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-
-
-              </motion.div>
+                {/* Video 2: Landing */}
+                <motion.div
+                  className="aspect-video bg-white/5 rounded-lg border border-white/10 overflow-hidden relative group cursor-pointer perspective-1000"
+                  whileHover="hover"
+                  initial="initial"
+                  onMouseMove={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -5;
+                    const rotateY = ((x - centerX) / centerX) * 5;
+                    e.currentTarget.style.setProperty("--rotateX", `${rotateX}deg`);
+                    e.currentTarget.style.setProperty("--rotateY", `${rotateY}deg`);
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.setProperty("--rotateX", `0deg`);
+                    e.currentTarget.style.setProperty("--rotateY", `0deg`);
+                  }}
+                  style={{
+                    transform: "perspective(1000px) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg))",
+                    transition: "transform 0.1s ease-out"
+                  }}
+                >
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent z-20 pointer-events-none"
+                    variants={{
+                      initial: { x: "-100%" },
+                      hover: { x: "100%", transition: { repeat: Infinity, duration: 1.5, ease: "linear" } }
+                    }}
+                  />
+                  <video
+                    src={vidLanding}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                  />
+                </motion.div>
+              </div>
             </div>
           </Scene>
 
