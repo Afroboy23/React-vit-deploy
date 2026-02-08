@@ -142,10 +142,15 @@ function HomePage() {
 
           {/* SCENE 2: MANIFESTO (16% - 33%) */}
           <Scene scrollYProgress={scrollYProgress} start={0.16} end={0.33}>
-            <div className="max-w-3xl text-center">
-              <p className="text-2xl sm:text-4xl leading-tight font-light text-white/90">
-                Conversion-led design, built to turn attention into enquiries <br />
-                <span className="text-cyan">— with a presence that separates you instantly.</span>
+            <div className="max-w-5xl text-center flex flex-col gap-8">
+              <p className="text-xl sm:text-3xl font-[Arial,sans-serif] leading-relaxed text-white/90">
+                By<span className="text-cyan">Creair</span> is a cinematic digital studio that develops your full design and digital needs.
+              </p>
+              <p className="text-base sm:text-xl font-[Arial,sans-serif] leading-relaxed text-white/80">
+                We create premium websites, operating systems, and the infrastructure to host your own educational courses.
+              </p>
+              <p className="text-base sm:text-xl font-[Arial,sans-serif] leading-relaxed text-white/80">
+                Our work blends high-end design with smart systems that save time and boost results. <span className="text-cyan">From first impression to daily operations, we help your company move with precision and impact.</span>
               </p>
             </div>
           </Scene>

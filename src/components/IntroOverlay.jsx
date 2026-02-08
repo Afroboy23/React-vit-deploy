@@ -1,27 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import videoSource from "../assets/bycreair-animation.mov";
 
 export default function IntroOverlay({ onComplete }) {
   const [show, setShow] = useState(true);
+  const [isReady, setIsReady] = useState(false);
+  const videoRef = useRef(null);
 
-  useEffect(() => {
-    // Elegant timing: 
-    // 0s-1s: Fade In
-    // 1s-2.5s: Hold & Breathe
-    // 2.5s: Fade Out
-    const timer = setTimeout(() => {
-      setShow(false);
-    }, 2800);
-
-    const completeTimer = setTimeout(() => {
+  const handleVideoEnd = () => {
+    setShow(false);
+    // Wait for the exit animation to finish before unmounting parent if needed
+    setTimeout(() => {
       if (onComplete) onComplete();
-    }, 3800); // Wait for exit animation
+    }, 1000);
+  };
 
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(completeTimer);
-    };
-  }, [onComplete]);
+  const handleCanPlayThrough = () => {
+    setIsReady(true);
+    if (videoRef.current) {
+      videoRef.current.play().catch(e => console.log("Autoplay prevented:", e));
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -30,22 +29,28 @@ export default function IntroOverlay({ onComplete }) {
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
+          transition={{ duration: 1, ease: "easeInOut" }}
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96, filter: "blur(4px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            exit={{ opacity: 0, scale: 1.05, filter: "blur(8px)" }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-            className="flex flex-col items-center"
-          >
-            <h1 className="text-5xl sm:text-7xl font-medium tracking-tight text-white/90">
-              ByCreair
-            </h1>
-            <p className="mt-6 text-sm sm:text-base font-light tracking-[0.25em] text-white/50 uppercase">
-              Nihil Sine Labore
-            </p>
-          </motion.div>
+          {/* Loading Indicator (Hidden once ready) */}
+          {!isReady && (
+            <div className="absolute inset-0 flex items-center justify-center z-10">
+              <div className="w-1.5 h-1.5 bg-white rounded-full animate-ping" />
+            </div>
+          )}
+
+          <motion.video
+            ref={videoRef}
+            src={videoSource}
+            preload="auto"
+            muted
+            playsInline
+            onEnded={handleVideoEnd}
+            onCanPlayThrough={handleCanPlayThrough}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isReady ? 1 : 0 }}
+            transition={{ duration: 0.5 }}
+            className="w-full h-full object-cover"
+          />
         </motion.div>
       )}
     </AnimatePresence>

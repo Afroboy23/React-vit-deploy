@@ -88,32 +88,63 @@ function SystemsPage() {
                 </div>
                 <div className="md:col-span-8">
                   <motion.div
-                    whileHover={{ scale: 1.01, borderColor: "rgba(6, 182, 212, 0.4)" }}
+                    whileHover={{ scale: 1.005, borderColor: "rgba(6, 182, 212, 0.4)" }}
                     transition={{ duration: 0.3 }}
                     className="bg-white/[0.03] border border-white/10 p-8 sm:p-10 rounded-sm hover:bg-white/[0.04] transition-all duration-500"
                   >
-                    <h3 className="text-xs uppercase tracking-widest text-white/40 mb-6">Includes</h3>
-                    <motion.ul
-                      variants={listContainerVariants}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true }}
-                      className="grid sm:grid-cols-2 gap-x-8 gap-y-4"
-                    >
-                      {[
-                        "Conversion-first structure",
-                        "Premium UI design + build",
-                        "Interactive features (Motion)",
-                        "Performance and final polish",
-                        "SEO-ready foundations",
-                        "Analytics-ready setup"
-                      ].map((item, i) => (
-                        <motion.li variants={listItemVariants} key={i} className="flex items-start gap-3 text-white/80 font-light">
-                          <span className="text-cyan mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
-                          {item}
-                        </motion.li>
-                      ))}
-                    </motion.ul>
+                    <div className="space-y-12">
+                      {/* Strategy */}
+                      <div>
+                        <h3 className="text-xl text-white mb-6">Strategy & Direction</h3>
+                        <ul className="space-y-3 pl-2 border-l border-white/10">
+                          {[
+                            "Discovery & digital strategy",
+                            "Offer + messaging structure",
+                            "Conversion planning (user journey, funnels)"
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start gap-3 text-white/80 font-light text-sm pl-4">
+                              <span className="text-cyan mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Web Platforms */}
+                      <div>
+                        <h3 className="text-xl text-white mb-6">Web & Digital Platforms</h3>
+                        <ul className="space-y-3 pl-2 border-l border-white/10">
+                          {[
+                            "High-performance websites",
+                            "Web apps / portals (dashboards, gated areas)",
+                            "Website redesigns + upgrades",
+                            "Copy support for key pages"
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start gap-3 text-white/80 font-light text-sm pl-4">
+                              <span className="text-cyan mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Cinematic */}
+                      <div>
+                        <h3 className="text-xl text-white mb-6">Cinematic & Interactive Experiences</h3>
+                        <ul className="space-y-3 pl-2 border-l border-white/10">
+                          {[
+                            "Motion design + animation direction",
+                            "Micro-interactions (hover, scroll, transitions)",
+                            "Interactive page sections"
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start gap-3 text-white/80 font-light text-sm pl-4">
+                              <span className="text-cyan mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
                   </motion.div>
                 </div>
               </div>
@@ -135,67 +166,89 @@ function SystemsPage() {
                     Under the hood, we build operating systems that work for you — not with you. We connect your website to a real business engine: enquiries flow into the right place, get tracked, followed up, and moved through a pipeline without manual chaos.
                   </p>
                 </div>
-                <div className="md:col-span-8 space-y-8">
-                  {/* CRM */}
+                <div className="md:col-span-8">
                   <motion.div
-                    whileHover={{ scale: 1.01, borderColor: "rgba(6, 182, 212, 0.4)" }}
+                    whileHover={{ scale: 1.005, borderColor: "rgba(6, 182, 212, 0.4)" }}
                     transition={{ duration: 0.3 }}
-                    className="bg-white/[0.03] border border-white/10 p-8 sm:p-10 rounded-sm hover:bg-white/[0.04] transition-colors duration-500"
+                    className="bg-white/[0.03] border border-white/10 p-8 sm:p-10 rounded-sm hover:bg-white/[0.04] transition-all duration-500"
                   >
-                    <h3 className="text-xl text-white mb-2">CRM & Pipeline Build</h3>
-                    <p className="text-white/50 text-sm mb-6">The engine room.</p>
-                    <motion.ul
-                      variants={listContainerVariants}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true }}
-                      className="grid sm:grid-cols-2 gap-x-8 gap-y-4"
-                    >
-                      {[
-                        "CRM setup and configuration",
-                        "Custom pipeline stages",
-                        "Lead capture integration",
-                        "Field + tagging structure",
-                        "Automated follow-up sequences",
-                        "Team notifications + routing",
-                        "Dashboards and reporting views",
-                        "Client handover system"
-                      ].map((item, i) => (
-                        <motion.li variants={listItemVariants} key={i} className="flex items-start gap-3 text-white/80 font-light">
-                          <span className="text-cyan mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
-                          {item}
-                        </motion.li>
-                      ))}
-                    </motion.ul>
-                  </motion.div>
+                    <div className="grid md:grid-cols-2 gap-x-12 gap-y-12">
+                      {/* Business OS */}
+                      <div>
+                        <h3 className="text-xl text-white mb-2">Business Operating Systems</h3>
+                        <p className="text-white/50 text-xs uppercase tracking-widest mb-6">The Engine Room</p>
+                        <ul className="space-y-3 pl-2 border-l border-white/10">
+                          {[
+                            "CRM setup + pipeline build",
+                            "Forms & booking flows",
+                            "Internal dashboards",
+                            "Workflow structure"
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start gap-3 text-white/80 font-light text-sm pl-4">
+                              <span className="text-cyan mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
 
-                  {/* Automation */}
-                  <motion.div
-                    whileHover={{ scale: 1.01, borderColor: "rgba(6, 182, 212, 0.4)" }}
-                    transition={{ duration: 0.3 }}
-                    className="bg-white/[0.03] border border-white/10 p-8 sm:p-10 rounded-sm hover:bg-white/[0.04] transition-colors duration-500"
-                  >
-                    <h3 className="text-xl text-white mb-2">Automation & Integrations</h3>
-                    <p className="text-white/50 text-sm mb-6">Connecting the dots.</p>
-                    <motion.ul
-                      variants={listContainerVariants}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true }}
-                      className="grid sm:grid-cols-2 gap-x-8 gap-y-4"
-                    >
-                      {[
-                        "Website → CRM → Calendar workflows",
-                        "Integrations between your tools",
-                        "Reduced admin workload",
-                        "Smart routing rules"
-                      ].map((item, i) => (
-                        <motion.li variants={listItemVariants} key={i} className="flex items-start gap-3 text-white/80 font-light">
-                          <span className="text-cyan mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
-                          {item}
-                        </motion.li>
-                      ))}
-                    </motion.ul>
+                      {/* Automation */}
+                      <div>
+                        <h3 className="text-xl text-white mb-2">Automation & Integrations</h3>
+                        <p className="text-white/50 text-xs uppercase tracking-widest mb-6">Connecting the dots</p>
+                        <ul className="space-y-3 pl-2 border-l border-white/10">
+                          {[
+                            "Workflow automation",
+                            "Tool integrations (Zapier/Make)",
+                            "Lead capture systems",
+                            "Smart routing rules"
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start gap-3 text-white/80 font-light text-sm pl-4">
+                              <span className="text-cyan mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* AI Solutions */}
+                      <div>
+                        <h3 className="text-xl text-white mb-2">AI-Powered Solutions</h3>
+                        <p className="text-white/50 text-xs uppercase tracking-widest mb-6">Future-Proofing</p>
+                        <ul className="space-y-3 pl-2 border-l border-white/10">
+                          {[
+                            "AI chat assistants",
+                            "Lead qualification bots",
+                            "Automated replies",
+                            "Knowledge base systems"
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start gap-3 text-white/80 font-light text-sm pl-4">
+                              <span className="text-cyan mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Course Infrastructure */}
+                      <div>
+                        <h3 className="text-xl text-white mb-2">Course Infrastructure</h3>
+                        <p className="text-white/50 text-xs uppercase tracking-widest mb-6">Monetise Knowledge</p>
+                        <ul className="space-y-3 pl-2 border-l border-white/10">
+                          {[
+                            "Course hosting setup",
+                            "Gated content areas",
+                            "Payment & membership flows",
+                            "User access strategies"
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start gap-3 text-white/80 font-light text-sm pl-4">
+                              <span className="text-cyan mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
                   </motion.div>
                 </div>
               </div>
@@ -219,29 +272,44 @@ function SystemsPage() {
                     Build visibility. Build demand. Then convert it. We don’t just drive traffic — we shape the journey so it becomes enquiries.
                   </p>
                   <motion.div
-                    whileHover={{ scale: 1.01, borderColor: "rgba(6, 182, 212, 0.4)" }}
+                    whileHover={{ scale: 1.005, borderColor: "rgba(6, 182, 212, 0.4)" }}
                     transition={{ duration: 0.3 }}
-                    className="bg-white/[0.03] border border-white/10 p-8 rounded-sm h-[calc(100%-10rem)] hover:bg-white/[0.04] transition-colors duration-500"
+                    className="bg-white/[0.03] border border-white/10 p-8 rounded-sm h-full hover:bg-white/[0.04] transition-all duration-500"
                   >
-                    <motion.ul
-                      variants={listContainerVariants}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true }}
-                      className="space-y-4"
-                    >
-                      {[
-                        "SEO foundations + structure",
-                        "Landing pages built for conversion",
-                        "Ads creative support",
-                        "Iteration recommendations"
-                      ].map((item, i) => (
-                        <motion.li variants={listItemVariants} key={i} className="flex items-start gap-3 text-white/80 font-light">
-                          <span className="text-cyan/70 mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
-                          {item}
-                        </motion.li>
-                      ))}
-                    </motion.ul>
+                    <div className="space-y-8">
+                      {/* SEO */}
+                      <div>
+                        <h3 className="text-lg text-white mb-4">SEO, Performance & Growth</h3>
+                        <ul className="space-y-3">
+                          {[
+                            "SEO foundations (structure, metadata, search-ready)",
+                            "Speed + performance optimisation",
+                            "Analytics + conversion tracking setup"
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start gap-3 text-white/80 font-light text-sm">
+                              <span className="text-cyan mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Optimisation */}
+                      <div>
+                        <h3 className="text-lg text-white mb-4">Ongoing Optimisation</h3>
+                        <ul className="space-y-3">
+                          {[
+                            "Monthly improvements, testing, and iteration",
+                            "Maintenance, updates, and content changes"
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start gap-3 text-white/80 font-light text-sm">
+                              <span className="text-cyan mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
                   </motion.div>
                 </div>
 
@@ -253,32 +321,64 @@ function SystemsPage() {
                     Trust is a conversion tool. We build it intentionally. Your website should carry proof with precision — so customers feel confident.
                   </p>
                   <motion.div
-                    whileHover={{ scale: 1.01, borderColor: "rgba(6, 182, 212, 0.4)" }}
+                    whileHover={{ scale: 1.005, borderColor: "rgba(6, 182, 212, 0.4)" }}
                     transition={{ duration: 0.3 }}
-                    className="bg-white/[0.03] border border-white/10 p-8 rounded-sm h-[calc(100%-10rem)] hover:bg-white/[0.04] transition-colors duration-500"
+                    className="bg-white/[0.03] border border-white/10 p-8 rounded-sm h-full hover:bg-white/[0.04] transition-all duration-500"
                   >
-                    <motion.ul
-                      variants={listContainerVariants}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true }}
-                      className="space-y-4"
-                    >
-                      {[
-                        "Reputation management system",
-                        "Trust and proof placement",
-                        "Campaign design assets",
-                        "Logo Design & Visual Identity"
-                      ].map((item, i) => (
-                        <motion.li variants={listItemVariants} key={i} className="flex items-start gap-3 text-white/80 font-light">
-                          <span className="text-cyan/70 mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
-                          {item}
-                        </motion.li>
-                      ))}
-                    </motion.ul>
+                    <div className="space-y-8">
+                      {/* Brand & Creative */}
+                      <div>
+                        <h3 className="text-lg text-white mb-4">Brand & Creative</h3>
+                        <ul className="space-y-3">
+                          {[
+                            "Logo design",
+                            "Visual identity refresh (colors, typography)",
+                            "Design systems (consistent UI rules)",
+                            "Posters, flyers, and marketing collateral"
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start gap-3 text-white/80 font-light text-sm">
+                              <span className="text-cyan mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Reputation */}
+                      <div>
+                        <h3 className="text-lg text-white mb-4">Reputation Management</h3>
+                        <ul className="space-y-3">
+                          {[
+                            "Review strategy + reputation workflows",
+                            "Google Business Profile optimisation + support"
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start gap-3 text-white/80 font-light text-sm">
+                              <span className="text-cyan mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Videography */}
+                      <div>
+                        <h3 className="text-lg text-white mb-4">Videography</h3>
+                        <ul className="space-y-3">
+                          {[
+                            "Short: short-form content (Reels/TikTok/ads)",
+                            "Medium: brand promos + event highlights",
+                            "Long: full cinematic production"
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start gap-3 text-white/80 font-light text-sm">
+                              <span className="text-cyan mt-1.5 h-1.5 w-1.5 rounded-full bg-cyan-400 block shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
                   </motion.div>
                 </div>
-
               </div>
             </motion.section>
 

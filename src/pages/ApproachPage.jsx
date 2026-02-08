@@ -2,11 +2,13 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import { motion } from "framer-motion";
 
+
 function ApproachPage() {
   return (
     <div className="relative min-h-screen bg-black text-white selection:bg-cyan-500/20 selection:text-cyan-200">
 
-      {/* Background: Ethereal Gradient */}
+      {/* Background: Globe + Ethereal Gradient */}
+
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="ethereal-gradient absolute inset-0 opacity-20" />
       </div>
@@ -92,10 +94,10 @@ function ApproachPage() {
               </div>
               <div className="md:col-span-8 grid sm:grid-cols-2 gap-8 text-white/60 font-light leading-relaxed">
                 <p>
-                  We prototype early and fast so you can see the vision before we commit to full build. This stage is where we shape the experience: layout, hierarchy, interactive behaviour, and motion direction.
+                  We prototype early and fast so you can see the vision before we commit to full build. This stage is where we shape the experience: layout, hierarchy, interactive behaviour, and motion direction — with a focus on an interface that’s easy to navigate and instantly familiar.
                 </p>
                 <p>
-                  You’ll see the site’s flow come to life quickly — how users move, what they notice first, where they click, and how the experience guides them toward enquiry. We refine the details that make it feel premium: spacing, typography, micro-interactions, and animation timing — so it doesn’t just look good, it feels engineered.
+                  You’ll see the site’s flow come to life quickly — how users move, what they notice first, where they click, and how the experience guides them toward enquiry. We refine the details that make it feel premium: spacing, typography, micro-interactions, and animation timing — so it doesn’t just look good, it feels engineered, and keeps users engaged for longer.
                 </p>
               </div>
             </motion.div>
