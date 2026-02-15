@@ -1,10 +1,10 @@
 // src/pages/HomePage.jsx
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValueEvent, useInView } from "framer-motion";
 import imgShowreel from "../assets/showreel-preview.png";
-import vidAnimation from "../assets/bycreair-animation.mov";
+import vidAnimation from "../assets/bycreair-animation.scale-down.mov"; // Optimized
 import vidLanding from "../assets/bycreair-landing.mp4";
 
 // Helper for Scene Transitions
@@ -43,6 +43,39 @@ function Scene({ children, scrollYProgress, start, end }) {
   );
 }
 
+// Lazy Video Component
+function LazyVideo({ src, className, poster }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "200px" }); // Load when 200px away
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    if (isInView) setShouldLoad(true);
+  }, [isInView]);
+
+  return (
+    <div ref={ref} className={`relative overflow-hidden ${className}`}>
+      {shouldLoad ? (
+        <video
+          src={src}
+          poster={poster}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        poster ? (
+          <img src={poster} alt="Video preview" className="w-full h-full object-cover opacity-50" />
+        ) : (
+          <div className="w-full h-full bg-white/5 animate-pulse" />
+        )
+      )}
+    </div>
+  );
+}
+
 function HomePage() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -70,53 +103,22 @@ function HomePage() {
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div className="ethereal-gradient absolute inset-0 opacity-50" />
 
-          {/* Living Vortex Animation - Full Screen Drift (Desktop Only for Performance) */}
-          <div className="absolute inset-0 overflow-hidden opacity-60 hidden md:block">
-            {/* Layer 1: Deep Nebula Base */}
+          {/* Living Vortex Animation - Simplified for Performance */}
+          <div className="absolute inset-0 overflow-hidden opacity-40 hidden md:block pointer-events-none">
+            {/* Single optimized layer */}
             <motion.div
-              className="absolute -top-[50%] -left-[50%] w-[200%] h-[200%] bg-gradient-to-tr from-indigo-900/40 via-purple-900/30 to-cyan-900/10 rounded-full blur-[120px]"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] bg-gradient-to-tr from-indigo-900/30 via-purple-900/20 to-cyan-900/10 rounded-full blur-[60px]"
+              initial={{ scale: 0.9, opacity: 0.5 }}
               animate={{
-                rotate: 360,
-                x: ["0%", "10%", "-10%", "5%", "0%"],
-                y: ["0%", "-10%", "10%", "-5%", "0%"],
+                scale: [0.9, 1.1, 0.9],
+                opacity: [0.5, 0.8, 0.5],
               }}
               transition={{
-                rotate: { duration: 60, repeat: Infinity, ease: "linear" },
-                x: { duration: 20, repeat: Infinity, ease: "easeInOut" },
-                y: { duration: 25, repeat: Infinity, ease: "easeInOut" }
-              }}
-            />
-
-            {/* Layer 2: Electric Mid-Tones */}
-            <motion.div
-              className="absolute top-[20%] left-[20%] w-[80vw] h-[80vw] bg-gradient-to-bl from-cyan-500/20 via-blue-600/20 to-transparent rounded-full blur-[100px]"
-              animate={{
-                rotate: -360,
-                scale: [0.8, 1.2, 0.9, 1.1, 0.8],
-                x: ["-20%", "30%", "-10%", "20%", "-20%"],
-                y: ["10%", "-30%", "20%", "-10%", "10%"],
-              }}
-              transition={{
-                rotate: { duration: 45, repeat: Infinity, ease: "linear" },
-                scale: { duration: 15, repeat: Infinity, ease: "easeInOut" },
-                x: { duration: 18, repeat: Infinity, ease: "easeInOut" },
-                y: { duration: 22, repeat: Infinity, ease: "easeInOut" }
-              }}
-            />
-
-            {/* Layer 3: Vibrant Core */}
-            <motion.div
-              className="absolute top-[40%] left-[40%] w-[50vw] h-[50vw] bg-gradient-to-r from-cyan-400/30 to-fuchsia-500/30 rounded-full blur-[80px]"
-              animate={{
-                scale: [0.8, 1.1, 0.9, 1.2, 0.8],
-                x: ["0%", "-40%", "30%", "-20%", "0%"],
-                y: ["0%", "30%", "-40%", "20%", "0%"]
-              }}
-              transition={{
-                duration: 12,
+                duration: 10,
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
+              style={{ willChange: "transform, opacity" }} // Hardware acceleration hint
             />
           </div>
         </div>
@@ -206,13 +208,9 @@ function HomePage() {
                       hover: { x: "100%", transition: { repeat: Infinity, duration: 1.5, ease: "linear" } }
                     }}
                   />
-                  <video
+                  <LazyVideo
                     src={vidAnimation}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                    className="w-full h-full opacity-90 group-hover:opacity-100 transition-opacity"
                   />
                 </motion.div>
 
@@ -222,6 +220,7 @@ function HomePage() {
                   whileHover="hover"
                   initial="initial"
                   onMouseMove={(e) => {
+                    if (!window.matchMedia("(hover: hover)").matches) return;
                     const rect = e.currentTarget.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
@@ -248,13 +247,9 @@ function HomePage() {
                       hover: { x: "100%", transition: { repeat: Infinity, duration: 1.5, ease: "linear" } }
                     }}
                   />
-                  <video
+                  <LazyVideo
                     src={vidLanding}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                    className="w-full h-full opacity-90 group-hover:opacity-100 transition-opacity"
                   />
                 </motion.div>
               </div>
