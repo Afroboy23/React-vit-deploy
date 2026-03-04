@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform, useMotionValueEvent, useInView } from "framer-motion";
+import StarlightPremium from "../components/StarlightPremium";
 import imgShowreel from "../assets/showreel-preview.png";
 import vidAnimation from "../assets/bycreair-animation.scale-down.mov"; // Optimized
 import vidLanding from "../assets/bycreair-landing.mp4";
@@ -11,10 +12,12 @@ import vidLanding from "../assets/bycreair-landing.mp4";
 // visibleRange: [start, end] of scroll progress (0-1) where this section is active
 function Scene({ children, scrollYProgress, start, end }) {
   // Fade in during the first 10% of the range, stay visible, fade out in the last 10%
+  // FIX: If start is 0, we want it to be visible immediately (1)
+  // Otherwise, use the fade-in logic
   const opacity = useTransform(
     scrollYProgress,
-    [start, start + 0.05, end - 0.05, end],
-    [0, 1, 1, 0]
+    start === 0 ? [start, end - 0.05, end] : [start, start + 0.05, end - 0.05, end],
+    start === 0 ? [1, 1, 0] : [0, 1, 1, 0]
   );
 
   // Subtle scale effect for depth
@@ -95,32 +98,13 @@ function HomePage() {
     <div ref={containerRef} className="relative h-[400vh] md:h-[600vh] bg-black text-white/90 selection:bg-white/10 selection:text-white">
 
       {/* FIXED VIEWPORT: The window into the experience */}
-      <div className="sticky top-0 h-screen overflow-hidden">
+      <div className="sticky top-0 h-[100dvh] overflow-hidden">
 
         <Navbar />
 
-        {/* BACKGROUND: ETHEREAL + VORTEX (Persists through all scenes) */}
-        <div className="absolute inset-0 z-0 pointer-events-none">
-          <div className="ethereal-gradient absolute inset-0 opacity-50" />
-
-          {/* Living Vortex Animation - Simplified for Performance */}
-          <div className="absolute inset-0 overflow-hidden opacity-40 hidden md:block pointer-events-none">
-            {/* Single optimized layer */}
-            <motion.div
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] bg-gradient-to-tr from-indigo-900/30 via-purple-900/20 to-cyan-900/10 rounded-full blur-[60px]"
-              initial={{ scale: 0.9, opacity: 0.5 }}
-              animate={{
-                scale: [0.9, 1.1, 0.9],
-                opacity: [0.5, 0.8, 0.5],
-              }}
-              transition={{
-                duration: 10,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              style={{ willChange: "transform, opacity" }} // Hardware acceleration hint
-            />
-          </div>
+        {/* BACKGROUND: PREMIUM STARLIGHT (Shader-based) */}
+        <div className="absolute inset-0 z-0">
+          <StarlightPremium />
         </div>
 
         {/* SCENES */}

@@ -25,13 +25,14 @@ function Navbar() {
         {/* Brand */}
         <Link
           to="/"
-          className="text-xs font-semibold tracking-[0.2em] uppercase text-white transition-opacity hover:opacity-80 z-50"
+          className="text-[0.7rem] font-medium tracking-[0.15em] uppercase text-white transition-opacity hover:opacity-80 z-50"
         >
           ByCreair
         </Link>
 
         {/* Desktop Links */}
-        <nav className="hidden items-center gap-10 md:flex">
+        {/* Desktop Links - Centered */}
+        <nav className="hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:flex items-center gap-10">
           {NAV_ITEMS.map((item) => (
             <div key={item.label} className="relative group">
               <Link
@@ -51,15 +52,17 @@ function Navbar() {
               )}
             </div>
           ))}
+        </nav>
 
-          {/* Luxury CTA: Understated */}
+        {/* Luxury CTA: Right Aligned */}
+        <div className="hidden md:block">
           <Link
             to="/builder"
-            className="ml-8 text-[0.7rem] font-medium uppercase tracking-[0.15em] text-white transition-colors hover:text-cyan"
+            className="text-[0.7rem] font-medium uppercase tracking-[0.15em] text-white transition-colors hover:text-cyan"
           >
             Get Started
           </Link>
-        </nav>
+        </div>
 
 
         {/* Mobile menu trigger */}

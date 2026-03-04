@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import IntroOverlay from "./components/IntroOverlay";
+import Footer from "./components/Footer";
 
 // Lazy Loaded Pages
 const HomePage = lazy(() => import("./pages/HomePage"));
@@ -17,6 +18,7 @@ const AuditPage = lazy(() => import("./pages/AuditPage"));
 const BuilderPage = lazy(() => import("./pages/BuilderPage"));
 const ConsultPage = lazy(() => import("./pages/ConsultPage"));
 const RequestPage = lazy(() => import("./pages/RequestPage"));
+const RunBuddyPage = lazy(() => import("./pages/RunBuddyPage"));
 
 function App() {
   const location = useLocation();
@@ -46,8 +48,12 @@ function App() {
           <Route path="/consult" element={<ConsultPage />} />
           <Route path="/builder" element={<BuilderPage />} />
           <Route path="/request" element={<RequestPage />} />
+          <Route path="/run-buddy" element={<RunBuddyPage />} />
         </Routes>
       </Suspense>
+
+      {/* FOOTER: Render on all pages EXCEPT Home ("/") */}
+      {location.pathname !== "/" && <Footer />}
     </>
   );
 }

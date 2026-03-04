@@ -2,6 +2,14 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import { motion, AnimatePresence } from "framer-motion";
 
+
+// Demo Components
+import BrowserWindow from "../components/BrowserWindow";
+import DemoNocturne from "../components/demos/DemoNocturne";
+import DemoCarBrand from "../components/demos/DemoCarBrand";
+import DemoCRM from "../components/demos/DemoCRM";
+import DemoRestaurant from "../components/demos/DemoRestaurant";
+
 // Project Assets
 import imgCRM from "../assets/crm.png";
 import imgLogistics from "../assets/logistics.png";
@@ -9,31 +17,54 @@ import imgPrecision from "../assets/precision-auto.png";
 import imgRestaurant from "../assets/resturant.png";
 import imgApp from "../assets/our-app.png";
 import imgNzala from "../assets/nzala-sc.png";
+import videoHilux from "../assets/hilux-video-2.mp4";
 
 const PROJECTS = [
   {
     id: 1,
-    title: "Precision Auto",
-    category: "Website & Branding",
-    image: imgPrecision,
+    title: "Nocturne Roasters",
+    category: "E-Commerce Strategy",
+    image: "/frames/ezgif-frame-001.jpg", // Use the first frame of the animation as thumbnail
+    // The Live Component to Render
+    // The Live Component to Render
+    component: (
+      <BrowserWindow url="nocturne.studio">
+        <DemoNocturne />
+      </BrowserWindow>
+    ),
   },
   {
     id: 2,
-    title: "Logistics Dashboard",
-    category: "System & Operations",
-    image: imgLogistics,
+    title: "Terra Motors",
+    category: "Automotive Launch",
+    video: videoHilux,
+    component: (
+      <BrowserWindow url="terramotors.com">
+        <DemoCarBrand />
+      </BrowserWindow>
+    ),
   },
   {
     id: 3,
-    title: "Custom CRM",
-    category: "Internal Tooling",
+    title: "Auckland Beginnings",
+    category: "Property Development",
     image: imgCRM,
+    component: (
+      <BrowserWindow url="nexus-crm.io">
+        <DemoCRM />
+      </BrowserWindow>
+    ),
   },
   {
     id: 4,
     title: "Restaurant Platform",
     category: "E-commerce & Web",
     image: imgRestaurant,
+    component: (
+      <BrowserWindow url="lumiere.restaurant">
+        <DemoRestaurant />
+      </BrowserWindow>
+    ),
   },
   {
     id: 5,
@@ -100,14 +131,26 @@ function ClientWorkPage() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group relative aspect-[4/3] w-full overflow-hidden rounded-sm bg-white/[0.03] border border-white/10 transition-all hover:border-cyan/50 cursor-pointer"
               >
-                {/* Image */}
-                <div className="absolute inset-0 w-full h-full">
-                  <motion.img
-                    layoutId={`image-${project.id}`}
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
-                  />
+                {/* Content: Image or Video */}
+                <div className="absolute inset-0 w-full h-full bg-zinc-900">
+                  {project.video ? (
+                    <motion.video
+                      layoutId={`image-${project.id}`}
+                      src={project.video}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                    />
+                  ) : (
+                    <motion.img
+                      layoutId={`image-${project.id}`}
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
+                    />
+                  )}
                 </div>
 
                 {/* Overlay Gradient on Hover */}
@@ -154,12 +197,19 @@ function ClientWorkPage() {
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
 
-              <div className="md:w-2/3 h-[40vh] md:h-auto relative">
-                <motion.img
-                  layoutId={`image-${selectedId}`}
-                  src={selectedProject.image}
-                  className="w-full h-full object-cover"
-                />
+              <div className="md:w-2/3 h-[40vh] md:h-auto relative bg-zinc-900 border-r border-white/5">
+                {selectedProject.component ? (
+                  // Full Interactive Demo
+                  <div className="w-full h-full">
+                    {selectedProject.component}
+                  </div>
+                ) : (
+                  <motion.img
+                    layoutId={`image-${selectedId}`}
+                    src={selectedProject.image}
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </div>
               <div className="md:w-1/3 p-8 flex flex-col justify-between bg-zinc-900 border-l border-white/5">
                 <div>
