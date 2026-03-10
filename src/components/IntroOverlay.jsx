@@ -15,6 +15,15 @@ export default function IntroOverlay({ onComplete }) {
     }
   }, [isReady, animationComplete]);
 
+  // Fallback timeout: Chrome/Android often block or fail to decode .mov files.
+  // If the video hasn't triggered onCanPlayThrough in 2.5 seconds, force the overlay to be ready.
+  React.useEffect(() => {
+    const fallbackTimer = setTimeout(() => {
+      setIsReady(true);
+    }, 2500);
+    return () => clearTimeout(fallbackTimer);
+  }, []);
+
   const handleVideoEnd = () => {
     setShow(false);
     setTimeout(() => {
