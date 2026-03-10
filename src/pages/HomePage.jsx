@@ -160,9 +160,9 @@ function HomePage() {
               </div>
 
               <div className="space-y-4 md:space-y-6">
-                {/* Video 1: Animation */}
+                {/* Video 1: Animation - Hidden on mobile, only shown on tablet/desktop */}
                 <motion.div
-                  className="aspect-video bg-white/5 rounded-lg border border-white/10 overflow-hidden relative group cursor-pointer perspective-1000"
+                  className="hidden md:block aspect-video bg-white/5 rounded-lg border border-white/10 overflow-hidden relative group cursor-pointer perspective-1000"
                   whileHover="hover"
                   initial="initial"
                   onMouseMove={(e) => {
@@ -198,9 +198,9 @@ function HomePage() {
                   />
                 </motion.div>
 
-                {/* Video 2: Landing */}
+                {/* Video 2: Landing - Primary featured video on mobile */}
                 <motion.div
-                  className="hidden md:block aspect-video bg-white/5 rounded-lg border border-white/10 overflow-hidden relative group cursor-pointer perspective-1000"
+                  className="aspect-video bg-white/5 rounded-lg border border-white/10 overflow-hidden relative group cursor-pointer perspective-1000"
                   whileHover="hover"
                   initial="initial"
                   onMouseMove={(e) => {
