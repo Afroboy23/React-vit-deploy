@@ -128,14 +128,14 @@ function HomePage() {
 
           {/* SCENE 2: MANIFESTO (16% - 33%) */}
           <Scene scrollYProgress={scrollYProgress} start={0.16} end={0.33}>
-            <div className="max-w-5xl text-center flex flex-col gap-8">
-              <p className="text-xl sm:text-3xl font-[Arial,sans-serif] leading-relaxed text-white/90">
+            <div className="max-w-5xl text-center flex flex-col gap-4 sm:gap-8 px-4">
+              <p className="text-lg sm:text-3xl font-[Arial,sans-serif] leading-relaxed text-white/90">
                 By<span className="text-cyan">Creair</span> is a cinematic digital studio that develops your full design and digital needs.
               </p>
-              <p className="text-base sm:text-xl font-[Arial,sans-serif] leading-relaxed text-white/80">
+              <p className="text-sm sm:text-xl font-[Arial,sans-serif] leading-relaxed text-white/80">
                 We create premium websites, operating systems, and the infrastructure to host your own educational courses.
               </p>
-              <p className="text-base sm:text-xl font-[Arial,sans-serif] leading-relaxed text-white/80">
+              <p className="text-sm sm:text-xl font-[Arial,sans-serif] leading-relaxed text-white/80">
                 Our work blends high-end design with smart systems that save time and boost results. <span className="text-cyan">From first impression to daily operations, we help your company move with precision and impact.</span>
               </p>
             </div>
@@ -145,21 +145,21 @@ function HomePage() {
           <Scene scrollYProgress={scrollYProgress} start={0.33} end={0.5}>
 
 
-            <div className="grid md:grid-cols-2 gap-12 items-center w-full max-w-5xl">
-              <div className="space-y-8">
-                <h2 className="text-xs uppercase tracking-[0.3em] text-cyan">Selected Work</h2>
-                <h3 className="text-4xl font-light">Precision in every pixel.</h3>
-                <ul className="space-y-4 text-lg font-light text-white/60">
+            <div className="grid md:grid-cols-2 gap-6 md:gap-12 items-center w-full max-w-5xl px-4">
+              <div className="space-y-4 md:space-y-8">
+                <h2 className="text-[10px] md:text-xs uppercase tracking-[0.3em] text-cyan">Selected Work</h2>
+                <h3 className="text-3xl md:text-4xl font-light">Precision in every pixel.</h3>
+                <ul className="space-y-2 md:space-y-4 text-sm md:text-lg font-light text-white/60">
                   <li>• Brand Identity Architecture</li>
                   <li>• High-Performance Web Platforms</li>
                   <li>• Cinematic Digital Experiences</li>
                 </ul>
-                <Link to="/client-work" className="inline-block text-xs uppercase tracking-[0.2em] border-b border-cyan-500/50 pb-1 hover:text-cyan transition-colors">
+                <Link to="/client-work" className="inline-block text-[10px] md:text-xs uppercase tracking-[0.2em] border-b border-cyan-500/50 pb-1 hover:text-cyan transition-colors">
                   View Portfolio
                 </Link>
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-4 md:space-y-6">
                 {/* Video 1: Animation */}
                 <motion.div
                   className="aspect-video bg-white/5 rounded-lg border border-white/10 overflow-hidden relative group cursor-pointer perspective-1000"
@@ -200,7 +200,7 @@ function HomePage() {
 
                 {/* Video 2: Landing */}
                 <motion.div
-                  className="aspect-video bg-white/5 rounded-lg border border-white/10 overflow-hidden relative group cursor-pointer perspective-1000"
+                  className="hidden md:block aspect-video bg-white/5 rounded-lg border border-white/10 overflow-hidden relative group cursor-pointer perspective-1000"
                   whileHover="hover"
                   initial="initial"
                   onMouseMove={(e) => {
@@ -242,15 +242,15 @@ function HomePage() {
 
           {/* SCENE 4: SYSTEMS (50% - 66%) */}
           <Scene scrollYProgress={scrollYProgress} start={0.5} end={0.66}>
-            <div className="grid md:grid-cols-3 gap-8 w-full max-w-6xl text-center">
+            <div className="grid md:grid-cols-3 gap-4 md:gap-8 w-full max-w-6xl text-center px-4">
               {[
                 { title: "Founders", desc: "Establishing authority from day zero." },
                 { title: "Scale-ups", desc: "Automating growth at velocity." },
                 { title: "Creators", desc: "Owning the platform, not renting it." }
               ].map((card, i) => (
-                <div key={i} className="p-8 border border-white/10 rounded-xl bg-black/20 hover:border-cyan-500/50 transition-colors">
-                  <h3 className="text-xl font-light text-white mb-4">{card.title}</h3>
-                  <p className="text-sm text-white/50">{card.desc}</p>
+                <div key={i} className="p-4 md:p-8 border border-white/10 rounded-xl bg-black/20 hover:border-cyan-500/50 transition-colors">
+                  <h3 className="text-lg md:text-xl font-light text-white mb-2 md:mb-4">{card.title}</h3>
+                  <p className="text-xs md:text-sm text-white/50">{card.desc}</p>
                 </div>
               ))}
             </div>
@@ -258,8 +258,8 @@ function HomePage() {
 
           {/* SCENE 5: CTA (66% - 83%) */}
           <Scene scrollYProgress={scrollYProgress} start={0.66} end={0.83}>
-            <div className="text-center">
-              <h2 className="text-4xl sm:text-6xl font-light text-white mb-12">
+            <div className="text-center px-4">
+              <h2 className="text-3xl sm:text-6xl font-light text-white mb-8 sm:mb-12">
                 Upgrade Your Brand Presence.
               </h2>
               <Link
@@ -273,14 +273,14 @@ function HomePage() {
 
           {/* SCENE 6: FINAL MOTTO (83% - 100%) */}
           <Scene scrollYProgress={scrollYProgress} start={0.83} end={1}>
-            <div className="text-center">
-              <h2 className="text-3xl sm:text-5xl font-medium tracking-tighter text-white mb-6">
+            <div className="text-center px-4">
+              <h2 className="text-2xl sm:text-5xl font-medium tracking-tighter text-white mb-4 sm:mb-6">
                 Nihil Sine Labore
               </h2>
-              <p className="text-sm sm:text-base font-light tracking-[0.3em] text-cyan uppercase leading-relaxed">
+              <p className="text-[10px] sm:text-base font-light tracking-[0.2em] sm:tracking-[0.3em] text-cyan uppercase leading-relaxed">
                 Nothing Achieved Without Hard Work
               </p>
-              <div className="mt-16 text-[10px] text-white/20 uppercase tracking-widest">
+              <div className="mt-12 sm:mt-16 text-[10px] text-white/20 uppercase tracking-widest">
                 ByCreair © 2026
               </div>
             </div>

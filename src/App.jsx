@@ -18,7 +18,7 @@ const AuditPage = lazy(() => import("./pages/AuditPage"));
 const BuilderPage = lazy(() => import("./pages/BuilderPage"));
 const ConsultPage = lazy(() => import("./pages/ConsultPage"));
 const RequestPage = lazy(() => import("./pages/RequestPage"));
-const RunBuddyPage = lazy(() => import("./pages/RunBuddyPage"));
+const RunBuddyDemo = lazy(() => import("./pages/demos/RunBuddyDemo"));
 
 function App() {
   const location = useLocation();
@@ -48,7 +48,7 @@ function App() {
           <Route path="/consult" element={<ConsultPage />} />
           <Route path="/builder" element={<BuilderPage />} />
           <Route path="/request" element={<RequestPage />} />
-          <Route path="/run-buddy" element={<RunBuddyPage />} />
+          <Route path="/demo/runbuddy-b7k2p" element={<RunBuddyDemo />} />
         </Routes>
       </Suspense>
 
