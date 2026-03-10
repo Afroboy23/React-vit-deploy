@@ -68,7 +68,7 @@ function Navbar() {
         {/* Mobile menu trigger */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex flex-col gap-1.5 md:hidden group z-50"
+          className="flex flex-col gap-1.5 md:hidden group z-50 relative p-2 cursor-pointer"
         >
           <motion.span
             animate={isOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
@@ -92,13 +92,20 @@ function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               className="fixed inset-0 bg-black/95 backdrop-blur-xl z-40 flex items-center justify-center md:hidden"
+              onClick={() => setIsOpen(false)}
             >
-              <nav className="flex flex-col items-center gap-8">
+              <nav
+                className="flex flex-col items-center gap-8"
+                onClick={(e) => e.stopPropagation()}
+              >
                 {NAV_ITEMS.map((item) => (
                   <Link
                     key={item.label}
                     to={item.path}
-                    onClick={(e) => item.badge && e.preventDefault()}
+                    onClick={(e) => {
+                      if (item.badge) e.preventDefault();
+                      else setIsOpen(false);
+                    }}
                     className={`text-xl font-light uppercase tracking-[0.2em] ${item.badge ? "text-white/30" : "text-white hover:text-cyan"
                       }`}
                   >
@@ -107,6 +114,7 @@ function Navbar() {
                 ))}
                 <Link
                   to="/builder"
+                  onClick={() => setIsOpen(false)}
                   className="mt-8 px-8 py-3 border border-white/20 rounded-full text-sm uppercase tracking-[0.2em] text-white hover:border-cyan text-cyan"
                 >
                   Get Started
