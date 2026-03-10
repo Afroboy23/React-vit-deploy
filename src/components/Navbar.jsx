@@ -20,111 +20,112 @@ function Navbar() {
   }, [location]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 py-8 transition-all duration-500 bg-gradient-to-b from-black/80 to-transparent backdrop-blur-sm">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 sm:px-8">
-        {/* Brand */}
-        <Link
-          to="/"
-          className="text-[0.7rem] font-medium tracking-[0.15em] uppercase text-white transition-opacity hover:opacity-80 z-50"
-        >
-          ByCreair
-        </Link>
-
-        {/* Desktop Links */}
-        {/* Desktop Links - Centered */}
-        <nav className="hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:flex items-center gap-10">
-          {NAV_ITEMS.map((item) => (
-            <div key={item.label} className="relative group">
-              <Link
-                to={item.path}
-                className={`text-[0.7rem] font-medium uppercase tracking-[0.15em] transition-colors ${item.badge
-                  ? "text-white/30 cursor-not-allowed"
-                  : "text-white/60 hover-cyan hover:text-cyan"
-                  }`}
-                onClick={(e) => item.badge && e.preventDefault()}
-              >
-                {item.label}
-              </Link>
-              {item.badge && (
-                <span className="absolute -top-3 -right-6 text-[0.5rem] tracking-wider uppercase text-cyan-400 opacity-80 whitespace-nowrap">
-                  {item.badge}
-                </span>
-              )}
-            </div>
-          ))}
-        </nav>
-
-        {/* Luxury CTA: Right Aligned */}
-        <div className="hidden md:block">
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 py-8 transition-all duration-500 bg-gradient-to-b from-black/80 to-transparent backdrop-blur-sm">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 sm:px-8">
+          {/* Brand */}
           <Link
-            to="/builder"
-            className="text-[0.7rem] font-medium uppercase tracking-[0.15em] text-white transition-colors hover:text-cyan"
+            to="/"
+            className="text-[0.7rem] font-medium tracking-[0.15em] uppercase text-white transition-opacity hover:opacity-80 z-50"
           >
-            Get Started
+            ByCreair
           </Link>
-        </div>
 
-
-        {/* Mobile menu trigger */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="flex flex-col gap-1.5 md:hidden group z-50 relative p-2 cursor-pointer"
-        >
-          <motion.span
-            animate={isOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-            className="h-px w-6 bg-white transition-all"
-          />
-          <motion.span
-            animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-            className="h-px w-6 bg-white transition-all"
-          />
-          <motion.span
-            animate={isOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-            className="h-px w-6 bg-white transition-all"
-          />
-        </button>
-
-        {/* Mobile Menu Overlay */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="fixed inset-0 bg-black/95 backdrop-blur-xl z-40 flex items-center justify-center md:hidden"
-              onClick={() => setIsOpen(false)}
-            >
-              <nav
-                className="flex flex-col items-center gap-8"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {NAV_ITEMS.map((item) => (
-                  <Link
-                    key={item.label}
-                    to={item.path}
-                    onClick={(e) => {
-                      if (item.badge) e.preventDefault();
-                      else setIsOpen(false);
-                    }}
-                    className={`text-xl font-light uppercase tracking-[0.2em] ${item.badge ? "text-white/30" : "text-white hover:text-cyan"
-                      }`}
-                  >
-                    {item.label} {item.badge && <span className="text-[0.6em] text-cyan align-top ml-2">{item.badge}</span>}
-                  </Link>
-                ))}
+          {/* Desktop Links */}
+          {/* Desktop Links - Centered */}
+          <nav className="hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:flex items-center gap-10">
+            {NAV_ITEMS.map((item) => (
+              <div key={item.label} className="relative group">
                 <Link
-                  to="/builder"
-                  onClick={() => setIsOpen(false)}
-                  className="mt-8 px-8 py-3 border border-white/20 rounded-full text-sm uppercase tracking-[0.2em] text-white hover:border-cyan text-cyan"
+                  to={item.path}
+                  className={`text-[0.7rem] font-medium uppercase tracking-[0.15em] transition-colors ${item.badge
+                    ? "text-white/30 cursor-not-allowed"
+                    : "text-white/60 hover-cyan hover:text-cyan"
+                    }`}
+                  onClick={(e) => item.badge && e.preventDefault()}
                 >
-                  Get Started
+                  {item.label}
                 </Link>
-              </nav>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </header>
+                {item.badge && (
+                  <span className="absolute -top-3 -right-6 text-[0.5rem] tracking-wider uppercase text-cyan-400 opacity-80 whitespace-nowrap">
+                    {item.badge}
+                  </span>
+                )}
+              </div>
+            ))}
+          </nav>
+
+          {/* Luxury CTA: Right Aligned */}
+          <div className="hidden md:block">
+            <Link
+              to="/builder"
+              className="text-[0.7rem] font-medium uppercase tracking-[0.15em] text-white transition-colors hover:text-cyan"
+            >
+              Get Started
+            </Link>
+          </div>
+
+          {/* Mobile menu trigger */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex flex-col gap-1.5 md:hidden group z-[60] relative p-2 cursor-pointer"
+          >
+            <motion.span
+              animate={isOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+              className="h-px w-6 bg-white transition-all"
+            />
+            <motion.span
+              animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
+              className="h-px w-6 bg-white transition-all"
+            />
+            <motion.span
+              animate={isOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
+              className="h-px w-6 bg-white transition-all"
+            />
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile Menu Overlay - Outside Header Stacking Context */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 bg-black/95 backdrop-blur-xl z-[55] flex items-center justify-center md:hidden"
+            onClick={() => setIsOpen(false)}
+          >
+            <nav
+              className="flex flex-col items-center gap-8"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {NAV_ITEMS.map((item) => (
+                <Link
+                  key={item.label}
+                  to={item.path}
+                  onClick={(e) => {
+                    if (item.badge) e.preventDefault();
+                    else setIsOpen(false);
+                  }}
+                  className={`text-xl font-light uppercase tracking-[0.2em] ${item.badge ? "text-white/30" : "text-white hover:text-cyan"
+                    }`}
+                >
+                  {item.label} {item.badge && <span className="text-[0.6em] text-cyan align-top ml-2">{item.badge}</span>}
+                </Link>
+              ))}
+              <Link
+                to="/builder"
+                onClick={() => setIsOpen(false)}
+                className="mt-8 px-8 py-3 border border-white/20 rounded-full text-sm uppercase tracking-[0.2em] text-white hover:border-cyan text-cyan"
+              >
+                Get Started
+              </Link>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
