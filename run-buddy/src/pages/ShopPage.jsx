@@ -27,9 +27,6 @@ export default function ShopPage() {
           <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-4">
             Official performance gear to keep you moving forward.
           </p>
-          <p className="text-sm font-bold tracking-widest uppercase text-orange-500">
-            Run buddy x SBK
-          </p>
         </div>
 
         {/* Product Grid */}
@@ -47,6 +44,7 @@ export default function ShopPage() {
 
           {/* Product Info */}
           <div className="flex flex-col">
+            <h3 className="text-orange-500 font-bold tracking-widest uppercase text-sm mb-2">RUN BUDDY X SBK</h3>
             <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">RB Performance Socks</h2>
             <div className="text-3xl font-light text-orange-400 mb-6">$24.00</div>
 
