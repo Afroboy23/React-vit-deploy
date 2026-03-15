@@ -8,7 +8,7 @@ const NAV_ITEMS = [
   { label: "Systems & Services", path: "/systems" },
   { label: "Our Approach", path: "/approach" },
   { label: "Networking", path: "#", badge: "Coming Soon" },
-  { label: "Merch", path: "/merch" },
+  { label: "Shop", path: "/shop" },
 ];
 
 function Navbar() {
