@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import socksImg from "../assets/images/rb-sock.jpg";
+import socksImg from "../assets/images/rb-sock-nobg.png";
 
 export default function ShopPage() {
   const [activeVariant, setActiveVariant] = useState(0);
