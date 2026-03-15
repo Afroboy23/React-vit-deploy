@@ -48,7 +48,7 @@ export default function ShopPage() {
             <div className="text-3xl font-light text-orange-400 mb-6">$24.00</div>
 
             <p className="text-lg text-zinc-400 mb-8 leading-relaxed">
-              Engineered for endurance. These Run Buddy compression socks feature targeted arch support, breathable mesh zones, and reinforced heels to keep your feet feeling fresh mile after mile. Featuring the RB elephant logo and SBK detailing.
+              Engineered for endurance. These Run Buddy compression socks feature targeted arch support, breathable mesh zones, and reinforced heels to keep your feet feeling fresh mile after mile.
             </p>
 
             {/* Variants */}
