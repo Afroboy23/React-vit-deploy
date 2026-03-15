@@ -24,8 +24,11 @@ export default function ShopPage() {
               Run Buddy
             </span> Shop
           </h1>
-          <p className="text-xl text-zinc-400 max-w-2xl mx-auto">
+          <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-4">
             Official performance gear to keep you moving forward.
+          </p>
+          <p className="text-sm font-bold tracking-widest uppercase text-orange-500">
+            Run buddy x SBK
           </p>
         </div>
 
