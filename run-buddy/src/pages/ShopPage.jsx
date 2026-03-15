@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import socksImg from "../assets/images/rb-sock.jpg";
 
 export default function ShopPage() {
   const [activeVariant, setActiveVariant] = useState(0);
@@ -31,16 +32,9 @@ export default function ShopPage() {
         {/* Product Grid */}
         <div className="grid md:grid-cols-2 gap-12 items-center bg-zinc-900/40 border border-white/5 rounded-3xl p-8 md:p-12">
 
-          {/* Product Image Placeholder */}
-          <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-gradient-to-br from-zinc-800 to-zinc-950 flex items-center justify-center border border-white/10 group">
-            {/* Replace this div with an <img src={socksImg} /> once you drop the image in assets */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-zinc-500 group-hover:scale-105 transition-transform duration-500">
-              <svg className="w-16 h-16 mb-4 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <span className="font-medium tracking-widest uppercase text-sm">Upload Image to Assets</span>
-              <span className="text-xs text-zinc-600 mt-2 text-center px-6">Replace this box with an {`<img />`} tag pointing to your socks photo.</span>
-            </div>
+          {/* Product Image */}
+          <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-white flex items-center justify-center border border-white/10 group">
+            <img src={socksImg} alt="Run Buddy Performance Socks" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 p-8" />
 
             {/* Badge */}
             <div className="absolute top-6 left-6 px-4 py-1.5 bg-orange-500 text-white text-xs font-black tracking-widest uppercase rounded-full shadow-lg z-10">
