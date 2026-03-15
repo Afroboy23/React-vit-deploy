@@ -1,124 +1,29 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
+import runBuddyLogo from "../assets/images/rb.jpg";
 
-// Studio Navigation Structure
-const NAV_ITEMS = [
-  { label: "Client work", path: "/client-work" },
-  { label: "Systems & Services", path: "/systems" },
-  { label: "Our Approach", path: "/approach" },
-  { label: "Networking", path: "#", badge: "Coming Soon" },
-  { label: "Shop", path: "/shop" },
-];
-
-function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
-
-  // Close menu when route changes
-  React.useEffect(() => {
-    setIsOpen(false);
-  }, [location]);
-
+export default function Navbar() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 py-8 transition-all duration-500 bg-gradient-to-b from-black/80 to-transparent backdrop-blur-sm">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 sm:px-8">
-        {/* Brand */}
-        <Link
-          to="/"
-          className="text-[0.7rem] font-medium tracking-[0.15em] uppercase text-white transition-opacity hover:opacity-80 z-50"
-        >
-          ByCreair
-        </Link>
-
-        {/* Desktop Links */}
-        {/* Desktop Links - Centered */}
-        <nav className="hidden absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:flex items-center gap-10">
-          {NAV_ITEMS.map((item) => (
-            <div key={item.label} className="relative group">
-              <Link
-                to={item.path}
-                className={`text-[0.7rem] font-medium uppercase tracking-[0.15em] transition-colors ${item.badge
-                  ? "text-white/30 cursor-not-allowed"
-                  : "text-white/60 hover-cyan hover:text-cyan"
-                  }`}
-                onClick={(e) => item.badge && e.preventDefault()}
-              >
-                {item.label}
-              </Link>
-              {item.badge && (
-                <span className="absolute -top-3 -right-6 text-[0.5rem] tracking-wider uppercase text-cyan-400 opacity-80 whitespace-nowrap">
-                  {item.badge}
-                </span>
-              )}
-            </div>
-          ))}
-        </nav>
-
-        {/* Luxury CTA: Right Aligned */}
-        <div className="hidden md:block">
-          <Link
-            to="/builder"
-            className="text-[0.7rem] font-medium uppercase tracking-[0.15em] text-white transition-colors hover:text-cyan"
-          >
-            Get Started
-          </Link>
+    <nav className="fixed w-full z-50 top-0 px-6 py-4 flex justify-between items-center bg-zinc-950/80 backdrop-blur-md border-b border-white/5">
+      <div className="flex items-center gap-2">
+        <div className="w-10 h-10 rounded overflow-hidden flex items-center justify-center bg-white shadow-sm">
+          <img src={runBuddyLogo} alt="Run Buddy Logo" className="w-full h-full object-cover" />
         </div>
-
-
-        {/* Mobile menu trigger */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="flex flex-col gap-1.5 md:hidden group z-50"
-        >
-          <motion.span
-            animate={isOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-            className="h-px w-6 bg-white transition-all"
-          />
-          <motion.span
-            animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-            className="h-px w-6 bg-white transition-all"
-          />
-          <motion.span
-            animate={isOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-            className="h-px w-6 bg-white transition-all"
-          />
-        </button>
-
-        {/* Mobile Menu Overlay */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="fixed inset-0 bg-black/95 backdrop-blur-xl z-40 flex items-center justify-center md:hidden"
-            >
-              <nav className="flex flex-col items-center gap-8">
-                {NAV_ITEMS.map((item) => (
-                  <Link
-                    key={item.label}
-                    to={item.path}
-                    onClick={(e) => item.badge && e.preventDefault()}
-                    className={`text-xl font-light uppercase tracking-[0.2em] ${item.badge ? "text-white/30" : "text-white hover:text-cyan"
-                      }`}
-                  >
-                    {item.label} {item.badge && <span className="text-[0.6em] text-cyan align-top ml-2">{item.badge}</span>}
-                  </Link>
-                ))}
-                <Link
-                  to="/builder"
-                  className="mt-8 px-8 py-3 border border-white/20 rounded-full text-sm uppercase tracking-[0.2em] text-white hover:border-cyan text-cyan"
-                >
-                  Get Started
-                </Link>
-              </nav>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <span className="font-bold text-xl tracking-tight hidden sm:block text-white">RunBuddy.</span>
       </div>
-    </header>
+      <div className="hidden md:flex items-center gap-8 text-sm font-bold text-zinc-400">
+        <a href="#" className="hover:text-white transition-colors text-white">Home</a>
+        <a href="#" className="hover:text-white transition-colors">Group Runs</a>
+        <a href="#" className="hover:text-white transition-colors">Coaching</a>
+        <a href="#" className="hover:text-white transition-colors">Pricing</a>
+        <a href="#" className="hover:text-white transition-colors">Shop</a>
+        <div className="flex items-center gap-2 cursor-not-allowed opacity-70">
+          <span>Choose Buddy</span>
+          <span className="text-[10px] px-1.5 py-0.5 rounded bg-orange-500/20 text-orange-400 uppercase tracking-wider font-black">Coming Soon</span>
+        </div>
+      </div>
+      <button className="px-5 py-2.5 bg-orange-500 text-white font-semibold text-sm rounded-full hover:bg-orange-600 transition-colors">
+        Get a Buddy
+      </button>
+    </nav>
   );
 }
-
-export default Navbar;
