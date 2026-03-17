@@ -17,10 +17,10 @@ export default function Navbar() {
         <Link to="/coaching" className="hover:text-white transition-colors">Coaching</Link>
         <Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link>
         <Link to="/shop" className="hover:text-white transition-colors text-white">Shop</Link>
-        <div className="flex items-center gap-2 cursor-not-allowed opacity-70">
+        <Link to="/buddies" className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity">
           <span>Choose Buddy</span>
           <span className="text-[10px] px-1.5 py-0.5 rounded bg-orange-500/20 text-orange-400 uppercase tracking-wider font-black">Coming Soon</span>
-        </div>
+        </Link>
       </div>
       <button className="px-5 py-2.5 bg-orange-500 text-white font-semibold text-sm rounded-full hover:bg-orange-600 transition-colors">
         Get a Buddy
