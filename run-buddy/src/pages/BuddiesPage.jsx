@@ -114,24 +114,47 @@ export default function BuddiesPage() {
               {step === 5 && "When are we moving?"}
             </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {selections[step].map((option, i) => (
-                <motion.div
-                  key={option}
-                  custom={i}
-                  initial="hidden"
-                  animate="visible"
-                  variants={itemVariants}
+            {step === 5 ? (
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={itemVariants}
+                custom={0}
+                className="flex flex-col items-center"
+              >
+                <input
+                  type="time"
+                  defaultValue="18:30"
+                  className="appearance-none bg-zinc-900/80 border border-white/20 p-6 rounded-2xl text-5xl font-black text-center text-white focus:outline-none focus:border-orange-500 transition-all shadow-inner w-64 mb-8"
+                  style={{ colorScheme: "dark" }}
+                />
+                <button
+                  onClick={advanceStep}
+                  className="px-12 py-5 bg-orange-500 text-white font-black text-xl tracking-wide rounded-full transition-all hover:scale-105 shadow-[0_0_40px_-10px_rgba(249,115,22,0.5)]"
                 >
-                  <button
-                    onClick={advanceStep}
-                    className="w-full p-6 h-full text-center rounded-2xl border border-white/10 bg-zinc-900/50 hover:bg-orange-500/10 hover:border-orange-500 text-lg font-bold transition-all hover:scale-105 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  Confirm Time
+                </button>
+              </motion.div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {selections[step].map((option, i) => (
+                  <motion.div
+                    key={option}
+                    custom={i}
+                    initial="hidden"
+                    animate="visible"
+                    variants={itemVariants}
                   >
-                    {option}
-                  </button>
-                </motion.div>
-              ))}
-            </div>
+                    <button
+                      onClick={advanceStep}
+                      className="w-full p-6 h-full text-center rounded-2xl border border-white/10 bg-zinc-900/50 hover:bg-orange-500/10 hover:border-orange-500 text-lg font-bold transition-all hover:scale-105 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                    >
+                      {option}
+                    </button>
+                  </motion.div>
+                ))}
+              </div>
+            )}
 
             {/* Selection Progress Indicator */}
             <div className="flex justify-center gap-2 mt-16">
@@ -139,7 +162,7 @@ export default function BuddiesPage() {
                 <div
                   key={dot}
                   className={`h-1.5 rounded-full transition-all duration-500 ${step === dot ? "w-8 bg-orange-500" :
-                      step > dot ? "w-2 bg-orange-500/50" : "w-2 bg-zinc-800"
+                    step > dot ? "w-2 bg-orange-500/50" : "w-2 bg-zinc-800"
                     }`}
                 />
               ))}
@@ -210,17 +233,17 @@ export default function BuddiesPage() {
             </h2>
 
             {/* Viewport for Roulette Reel */}
-            <div className="relative w-full h-[400px] flex items-center justify-center overflow-hidden mask-image-fade">
+            <div className="relative w-full max-w-md h-[500px] flex items-center justify-center overflow-hidden mask-image-fade mx-auto">
               {/* Center Selector Highlight */}
-              <div className="absolute top-0 bottom-0 left-1/2 -ml-32 w-64 border-2 border-orange-500 rounded-3xl z-20 pointer-events-none shadow-[0_0_50px_rgba(249,115,22,0.3)] bg-orange-500/10 backdrop-blur-[2px]" />
+              <div className="absolute top-1/2 left-1/2 -mt-40 -ml-32 w-64 h-80 border-2 border-orange-500 rounded-3xl z-20 pointer-events-none shadow-[0_0_50px_rgba(249,115,22,0.3)] bg-orange-500/10 backdrop-blur-[2px]" />
 
               {/* Scrolling Track */}
               <motion.div
-                className="absolute flex items-center gap-6"
-                initial={{ x: "40%" }} // Start slightly offset
+                className="absolute left-1/2 flex flex-col gap-6"
+                style={{ marginLeft: "-128px" }}
+                initial={{ top: "80%" }}
                 animate={{
-                  x: `-${chosenBuddyIndex * (256 + 24) - (window.innerWidth / 2 - 128)}px`
-                  // Move left exactly to center the chosenBuddyIndex item
+                  top: `calc(50% - ${chosenBuddyIndex * (320 + 24) + 160}px)`
                 }}
                 transition={{
                   duration: 4.5,
