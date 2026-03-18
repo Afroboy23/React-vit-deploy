@@ -183,7 +183,7 @@ export default function CoachingPage() {
             </h1>
           </motion.div>
           <motion.p variants={fadeUp} className="text-lg md:text-2xl text-zinc-400 font-light max-w-2xl mb-12 leading-relaxed">
-            Stop running aimlessly. Get a completely bespoke training plan built around your life, your pace, and your ultimate goals.
+            Your running journey, tailored to your pace, your lifestyle, and the goals that matter most to you.
           </motion.p>
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4">
             <button className="px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white rounded-full font-bold tracking-wide transition-all shadow-[0_0_40px_rgba(249,115,22,0.3)]">
