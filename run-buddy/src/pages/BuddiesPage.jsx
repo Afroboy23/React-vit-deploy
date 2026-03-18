@@ -177,7 +177,7 @@ export default function BuddiesPage() {
                 Choose a <br /><span className="text-orange-500 font-bold">Buddy</span>
               </h1>
               <p className="text-lg text-zinc-500 mb-16 px-4 leading-relaxed font-light">
-                Tap anywhere to preview our upcoming automated matchmaking experience.
+                Tap anywhere to preview our upcoming smart buddy-matching experience.
               </p>
             </motion.div>
           )}
@@ -215,10 +215,10 @@ export default function BuddiesPage() {
                     >
                       <div
                         className={`w-full py-4 px-6 flex items-center justify-between rounded-xl border text-base transition-all duration-300 ease-out font-medium tracking-wide ${isTapDown
-                            ? 'scale-[0.98] bg-zinc-800 border-white/20 text-white'
-                            : isSelected
-                              ? 'border-orange-500 bg-orange-500 text-white shadow-[0_8px_30px_rgba(249,115,22,0.3)]'
-                              : 'border-white/5 bg-zinc-900/50 text-zinc-400'
+                          ? 'scale-[0.98] bg-zinc-800 border-white/20 text-white'
+                          : isSelected
+                            ? 'border-orange-500 bg-orange-500 text-white shadow-[0_8px_30px_rgba(249,115,22,0.3)]'
+                            : 'border-white/5 bg-zinc-900/50 text-zinc-400'
                           }`}
                       >
                         {option}
@@ -262,10 +262,10 @@ export default function BuddiesPage() {
 
               <div
                 className={`mt-10 px-10 py-4 font-semibold text-lg rounded-full transition-all duration-300 ${activeTap === "confirm-time"
-                    ? "scale-[0.95] bg-orange-600 text-white"
-                    : selectedOption === "confirm-time"
-                      ? "bg-green-500 text-white shadow-[0_10px_30px_rgba(34,197,94,0.4)]"
-                      : "bg-white/10 text-white/50"
+                  ? "scale-[0.95] bg-orange-600 text-white"
+                  : selectedOption === "confirm-time"
+                    ? "bg-green-500 text-white shadow-[0_10px_30px_rgba(34,197,94,0.4)]"
+                    : "bg-white/10 text-white/50"
                   }`}
               >
                 Confirm Match Time
@@ -463,8 +463,8 @@ export default function BuddiesPage() {
                     <div
                       key={key}
                       className={`h-[48px] rounded-lg flex items-center justify-center font-normal text-2xl transition-all duration-[50ms] ${key === "⌫" || key === "."
-                          ? "bg-[#acb3ba] dark:bg-[#343537] text-black dark:text-white/80"
-                          : "bg-white dark:bg-[#616265] text-black dark:text-white"
+                        ? "bg-[#acb3ba] dark:bg-[#343537] text-black dark:text-white/80"
+                        : "bg-white dark:bg-[#616265] text-black dark:text-white"
                         } ${isTapDown ? "brightness-75 scale-[0.97]" : "shadow-[0_1px_1px_rgba(0,0,0,0.3)]"}`}
                     >
                       {key}
