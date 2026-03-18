@@ -13,9 +13,10 @@ const wait = (ms) => new Promise(res => setTimeout(res, ms));
 export default function BuddiesPage() {
   const [step, setStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [cursorPos, setCursorPos] = useState({ x: -100, y: -100 });
-  const [hoveredOption, setHoveredOption] = useState(null);
-  const [clickedOption, setClickedOption] = useState(null);
+  const [activeTap, setActiveTap] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [typedTime, setTypedTime] = useState("");
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
 
   const filters = {
     activity: "Running",
@@ -29,16 +30,14 @@ export default function BuddiesPage() {
     1: ["Running", "Gym", "Walking", "Hiking", "Sports"],
     2: ["Beginner", "Occasional", "Regular", "Good", "Consistent", "Pro", "Athlete"],
     3: ["Auckland CBD", "Newmarket", "Ponsonby", "Mt Eden", "Takapuna"],
-    4: ["Male", "Female", "Other", "Any"],
-    5: ["5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM"]
+    4: ["Male", "Female", "Other", "Any"]
   };
 
   const targets = {
     1: "Running",
     2: "Occasional",
     3: "Auckland CBD",
-    4: "Any",
-    5: "6:30 PM"
+    4: "Any"
   };
 
   useEffect(() => {
@@ -47,53 +46,82 @@ export default function BuddiesPage() {
     const runAutomatedFlow = async () => {
       if (!isPlaying) return;
 
-      if (step >= 1 && step <= 5) {
+      if (step >= 1 && step <= 4) {
         const targetName = targets[step];
 
-        // 1. Initial pause for elegant pacing
+        // Let viewer read options
+        await wait(2000);
+        if (isCancelled) return;
+
+        // Simulate finger pressing down on screen
+        setActiveTap(targetName);
+        await wait(250);
+        if (isCancelled) return;
+
+        // Finger lifts up (selection made)
+        setActiveTap(null);
+        setSelectedOption(targetName);
         await wait(1800);
         if (isCancelled) return;
 
-        // 2. Locate target element and move cursor
-        const el = document.getElementById(`option-${targetName.replace(/\s+/g, '-')}`);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          // Offset slightly to make it look intentionally human, not perfectly dead-center
-          setCursorPos({ x: rect.left + rect.width / 2 + 10, y: rect.top + rect.height / 2 + 10 });
-        }
-
-        // 3. Smooth cursor travel time
-        await wait(2200);
+        // Reset and advance
+        setSelectedOption(null);
+        setStep(s => s + 1);
+      }
+      else if (step === 5) {
+        // Step 5: Time input with fake iOS Keyboard
+        await wait(1500);
         if (isCancelled) return;
 
-        // 4. Hover state for human-like confirmation pause
-        setHoveredOption(targetName);
-        await wait(600);
+        // Tap the input field
+        setActiveTap("time-input");
+        await wait(250);
         if (isCancelled) return;
+        setActiveTap(null);
 
-        // 5. Fire click
-        setClickedOption(targetName);
-        await wait(300);
-        if (isCancelled) return;
-
-        // 6. Linger on the active state
-        setClickedOption(null);
+        // Slide up keyboard
+        setKeyboardVisible(true);
         await wait(1200);
         if (isCancelled) return;
 
-        // 7. Reset variables and fade to next step
-        setHoveredOption(null);
-        setCursorPos({ x: window.innerWidth / 2, y: window.innerHeight - 80 });
-        setStep(s => s + 1);
+        // Simulate typing 6:30 PM
+        const sequence = [
+          { key: "0", val: "0" },
+          { key: "6", val: "06" },
+          { key: "3", val: "06:3" },
+          { key: "0", val: "06:30" }
+        ];
+
+        for (const item of sequence) {
+          setActiveTap(item.key);
+          await wait(150);
+          setTypedTime(item.val);
+          setActiveTap(null);
+          await wait(350); // read speed difference
+          if (isCancelled) return;
+        }
+
+        await wait(800);
+
+        // Tap Confirm button on screen
+        setActiveTap("confirm-time");
+        await wait(250);
+        setKeyboardVisible(false);
+        setActiveTap(null);
+        setSelectedOption("confirm-time");
+
+        await wait(1200);
+        setSelectedOption(null);
+        if (!isCancelled) setStep(6);
       }
       else if (step === 6) {
-        // Searching state - breathe and build anticipation
-        await wait(8000);
+        // Searching state - Mobile Tinder matching energy
+        await wait(5000);
         if (!isCancelled) setStep(7);
       }
       else if (step === 7) {
-        // Roulette spin - elegant horizontal decelerated slide
-        await wait(9500);
+        // Vertical Tinder slot machine reveal
+        await wait(8000);
         if (!isCancelled) setStep(8);
       }
     };
@@ -102,12 +130,6 @@ export default function BuddiesPage() {
 
     return () => { isCancelled = true; };
   }, [step, isPlaying]);
-
-  const startDemo = () => {
-    setIsPlaying(true);
-    setCursorPos({ x: window.innerWidth / 2, y: window.innerHeight + 50 });
-    setStep(1);
-  };
 
   const rouletteCandidates = [
     { name: "Alex", img: packImg2, detail: "Regular • Ponsonby" },
@@ -118,280 +140,350 @@ export default function BuddiesPage() {
   ];
 
   const displayRoulette = Array.from({ length: 30 }, (_, i) => rouletteCandidates[i % rouletteCandidates.length]);
-  const chosenBuddyIndex = 26;
+  // The chosen buddy is index 25
+  const chosenBuddyIndex = 25;
   const chosenBuddy = displayRoulette[chosenBuddyIndex];
 
   const itemVariants = {
     hidden: { opacity: 0, y: 15 },
-    visible: (i) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.8, ease: "easeOut" } })
+    visible: (i) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.8, ease: "easeOut" } })
   };
 
   return (
-    <div className="pt-32 px-6 pb-24 min-h-screen flex flex-col items-center overflow-hidden bg-zinc-950 font-sans">
+    <div className="pt-24 md:pt-32 px-4 md:px-6 pb-24 min-h-screen flex flex-col items-center overflow-hidden bg-[#09090b] font-sans selection:bg-orange-500/30">
 
-      {/* Fake Mouse Cursor */}
-      <AnimatePresence>
-        {isPlaying && step <= 5 && (
-          <motion.div
-            initial={{ opacity: 0, x: window.innerWidth / 2, y: window.innerHeight }}
-            animate={{
-              opacity: 1,
-              x: cursorPos.x,
-              y: cursorPos.y,
-              scale: clickedOption ? 0.8 : 1
-            }}
-            exit={{ opacity: 0 }}
-            transition={{
-              x: { type: "tween", ease: [0.25, 1, 0.4, 1], duration: 1.8 },
-              y: { type: "tween", ease: [0.25, 1, 0.4, 1], duration: 1.8 },
-              scale: { duration: 0.15 },
-              opacity: { duration: 1 }
-            }}
-            className="fixed top-0 left-0 w-8 h-8 z-50 pointer-events-none drop-shadow-2xl"
-            style={{ marginLeft: '-4px', marginTop: '-4px' }}
-          >
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 -ml-2 -mt-2">
-              <path d="M5.5 3L20.5 10.5L12 12.5L9.5 21L5.5 3Z" fill="white" stroke="#18181b" strokeWidth="1.5" strokeLinejoin="round" />
-            </svg>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Centered Mobile Container to force iPhone aspect sizing layout logically */}
+      <div className="w-full max-w-md relative flex flex-col items-center">
+        <AnimatePresence mode="wait">
 
-      <AnimatePresence mode="wait">
-
-        {/* STEP 0: ENTRY / WELCOME */}
-        {step === 0 && (
-          <motion.div
-            key="step0"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            className="w-full max-w-4xl text-center mt-32 cursor-pointer group"
-            onClick={startDemo}
-          >
-            <div className="inline-flex items-center justify-center px-5 py-2 mb-10 rounded-full bg-white/5 border border-white/10 text-zinc-400 text-xs font-semibold tracking-widest uppercase transition-all duration-700 group-hover:bg-white/10 group-hover:text-white">
-              Coming Soon
-            </div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-medium mb-8 tracking-tight text-white transition-transform duration-1000 group-hover:scale-[1.02]">
-              Choose a <span className="text-orange-500 font-bold">Buddy</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-zinc-500 mb-16 max-w-2xl mx-auto leading-relaxed font-light group-hover:text-zinc-400 transition-colors duration-700">
-              Click anywhere to watch the automated product preview.
-            </p>
-          </motion.div>
-        )}
-
-        {/* STEPS 1-5: SELECTION FLOW */}
-        {step >= 1 && step <= 5 && (
-          <motion.div
-            key={`selection-step-${step}`}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="w-full max-w-3xl mt-20"
-          >
-            <h2 className="text-3xl md:text-5xl font-light mb-16 text-center tracking-tight text-white">
-              {step === 1 && "What's the play today?"}
-              {step === 2 && "What's your current level?"}
-              {step === 3 && "Where are we meeting?"}
-              {step === 4 && "Who are you running with?"}
-              {step === 5 && "When are we moving?"}
-            </h2>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-              {selections[step].map((option, i) => {
-                const isHovered = hoveredOption === option;
-                const isClicked = clickedOption === option;
-                const safeId = "option-" + option.replace(/\s+/g, '-');
-                return (
-                  <motion.div
-                    key={option}
-                    id={safeId}
-                    custom={i}
-                    initial="hidden"
-                    animate="visible"
-                    variants={itemVariants}
-                  >
-                    <div
-                      className={`w-full py-5 px-6 h-full flex items-center justify-center rounded-2xl border text-lg transition-all duration-700 ease-out font-medium tracking-wide ${isClicked
-                          ? 'border-orange-500 bg-orange-500 text-white scale-[0.97] shadow-[0_0_40px_rgba(249,115,22,0.4)]'
-                          : isHovered
-                            ? 'border-white/30 bg-zinc-800 scale-[1.03] text-white shadow-2xl'
-                            : 'border-white/5 bg-zinc-900/40 text-zinc-400'
-                        }`}
-                    >
-                      {option}
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-
-            {/* Selection Progress Indicator */}
-            <div className="flex justify-center gap-3 mt-24">
-              {[1, 2, 3, 4, 5].map(dot => (
-                <div
-                  key={dot}
-                  className={`h-1.5 rounded-full transition-all duration-1000 ease-in-out ${step === dot ? "w-10 bg-orange-500" :
-                      step > dot ? "w-3 bg-orange-500/40" : "w-3 bg-zinc-800"
-                    }`}
-                />
-              ))}
-            </div>
-          </motion.div>
-        )}
-
-        {/* STEP 6: SEARCHING STATE */}
-        {step === 6 && (
-          <motion.div
-            key="step6"
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.02 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-            className="w-full max-w-4xl flex flex-col items-center justify-center mt-40"
-          >
-            <motion.h2
-              animate={{ opacity: [0.3, 1, 0.3] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="text-3xl md:text-5xl font-light mb-16 tracking-widest text-zinc-300"
+          {/* STEP 0: ENTRY / WELCOME */}
+          {step === 0 && (
+            <motion.div
+              key="step0"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="w-full text-center mt-20 cursor-pointer group"
+              onClick={() => {
+                setIsPlaying(true);
+                setStep(1);
+              }}
             >
-              Searching for your buddy...
-            </motion.h2>
-
-            <div className="flex flex-wrap justify-center gap-5 max-w-3xl px-6">
-              {Object.values(filters).map((filter, i) => (
-                <motion.div
-                  key={filter}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.3, duration: 1.2, ease: "easeOut" }}
-                  className="px-6 py-2.5 bg-transparent border border-white/10 rounded-full text-zinc-400 font-medium tracking-wide text-sm"
-                >
-                  {filter}
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Elegant scanning line pulse */}
-            <div className="w-64 h-[2px] bg-zinc-800/50 mt-24 relative overflow-hidden rounded-full">
-              <motion.div
-                animate={{ x: ["-100%", "200%"] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-y-0 w-32 bg-gradient-to-r from-transparent via-orange-500/40 to-transparent"
-              />
-            </div>
-          </motion.div>
-        )}
-
-        {/* STEP 7: ROULETTE SPIN & MATCH REVEAL */}
-        {step === 7 && (
-          <motion.div
-            key="step7"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.2 }}
-            className="w-full max-w-6xl mt-32 flex flex-col items-center overflow-hidden"
-          >
-            <h2 className="text-4xl md:text-5xl font-light mb-20 tracking-widest text-zinc-200">
-              Buddy Found
-            </h2>
-
-            {/* Viewport for Horizontal Roulette Reel */}
-            <div className="relative w-full h-[360px] flex items-center justify-center overflow-hidden mask-image-fade mx-auto">
-              {/* Center Selector Highlight */}
-              <div className="absolute top-0 bottom-0 left-1/2 -ml-32 w-64 border border-orange-500/40 rounded-3xl z-20 pointer-events-none shadow-[0_0_60px_rgba(249,115,22,0.15)] bg-orange-500/5 backdrop-blur-[1px] transition-all duration-[8000ms]" />
-
-              {/* Scrolling Track */}
-              <motion.div
-                className="absolute flex items-center gap-6"
-                style={{ left: "50%" }}
-                initial={{ x: "20%" }}
-                animate={{
-                  x: `calc(-128px - ${chosenBuddyIndex * (256 + 24)}px)`
-                }}
-                transition={{
-                  duration: 8.5,
-                  ease: [0.1, 0.0, 0.05, 1], // Very slow elegant deceleration
-                }}
-              >
-                {displayRoulette.map((buddy, i) => (
-                  <div
-                    key={i}
-                    className={`w-64 h-[320px] rounded-2xl overflow-hidden relative shrink-0 transition-all duration-[2000ms] ease-out border ${i === chosenBuddyIndex ? 'border-orange-500/50 z-10 scale-100 opacity-100' : 'border-white/5 opacity-30 scale-95 grayscale'}`}
-                  >
-                    <img src={buddy.img} className="w-full h-full object-cover transition-transform duration-[4000ms] hover:scale-105" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent flex flex-col justify-end p-6">
-                      <h3 className="text-2xl font-medium text-white tracking-wide">{buddy.name}</h3>
-                      <p className="font-medium text-orange-400 text-sm mt-1">{buddy.detail}</p>
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* STEP 8: FINAL MATCH RESULT */}
-        {step === 8 && (
-          <motion.div
-            key="step8"
-            initial={{ opacity: 0, y: 30, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-            className="w-full max-w-4xl mt-16 flex flex-col md:flex-row gap-12 items-center bg-zinc-900/30 p-10 md:p-14 rounded-[32px] border border-white/5 relative overflow-hidden"
-          >
-            {/* Background glow removed for a cleaner minimal look, keeping just a subtle hint */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-orange-500/5 blur-[120px] rounded-full mix-blend-screen pointer-events-none" />
-
-            <div className="w-full md:w-[45%] aspect-[3/4] rounded-2xl overflow-hidden relative border border-white/10 z-10 shrink-0 shadow-2xl">
-              <img src={chosenBuddy.img} className="w-full h-full object-cover" />
-              <div className="absolute top-5 left-5 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900/80 border border-white/10 text-xs font-semibold tracking-widest uppercase text-white backdrop-blur-md">
-                <span className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]" />
-                Ready to Run
+              <div className="inline-flex items-center justify-center px-4 py-1.5 mb-8 rounded-full bg-white/5 border border-white/10 text-zinc-400 text-[10px] font-semibold tracking-widest uppercase">
+                coming soon
               </div>
-            </div>
+              <h1 className="text-5xl font-semibold mb-6 tracking-tight text-white leading-tight">
+                Choose a <br /><span className="text-orange-500 font-bold">Buddy</span>
+              </h1>
+              <p className="text-lg text-zinc-500 mb-16 px-4 leading-relaxed font-light">
+                Tap anywhere to preview our upcoming automated matchmaking experience.
+              </p>
+            </motion.div>
+          )}
 
-            <div className="w-full md:w-[55%] flex flex-col z-10">
-              <h4 className="text-orange-500 font-bold tracking-widest uppercase text-xs mb-3">RUN BUDDY MATCH</h4>
-              <h2 className="text-5xl md:text-6xl font-medium mb-8 text-white tracking-tight">{chosenBuddy.name}</h2>
+          {/* STEPS 1-4: SELECTION FLOW */}
+          {step >= 1 && step <= 4 && (
+            <motion.div
+              key={`selection-step-${step}`}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+              className="w-full mt-10 flex flex-col items-center"
+            >
+              <h2 className="text-3xl font-medium mb-10 text-center tracking-tight text-white px-4 leading-snug">
+                {step === 1 && "What's your \nactivity?"}
+                {step === 2 && "What's your \ncurrent level?"}
+                {step === 3 && "Where are we \nmeeting?"}
+                {step === 4 && "Who are you \nrunning with?"}
+              </h2>
 
-              <p className="text-lg text-zinc-400 mb-10 leading-relaxed font-light">
-                Matches exactly with your selected vibe. Based in the CBD and consistently hits that occasional target pace.
+              <div className="w-full flex flex-col gap-3 px-2">
+                {selections[step].map((option, i) => {
+                  const isTapDown = activeTap === option;
+                  const isSelected = selectedOption === option;
+
+                  return (
+                    <motion.div
+                      key={option}
+                      custom={i}
+                      initial="hidden"
+                      animate="visible"
+                      variants={itemVariants}
+                      className="w-full"
+                    >
+                      <div
+                        className={`w-full py-4 px-6 flex items-center justify-between rounded-xl border text-base transition-all duration-300 ease-out font-medium tracking-wide ${isTapDown
+                            ? 'scale-[0.98] bg-zinc-800 border-white/20 text-white'
+                            : isSelected
+                              ? 'border-orange-500 bg-orange-500 text-white shadow-[0_8px_30px_rgba(249,115,22,0.3)]'
+                              : 'border-white/5 bg-zinc-900/50 text-zinc-400'
+                          }`}
+                      >
+                        {option}
+                        {isSelected && (
+                          <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+
+          {/* STEP 5: TIME INPUT (MOBILE FOCUSED) */}
+          {step === 5 && (
+            <motion.div
+              key="step5"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+              className="w-full mt-10 flex flex-col items-center"
+            >
+              <h2 className="text-3xl font-medium mb-12 text-center tracking-tight text-white px-4">
+                What time?
+              </h2>
+
+              <div
+                className={`w-full max-w-[280px] bg-zinc-900 border py-6 rounded-2xl flex items-center justify-center transition-all duration-300 ${activeTap === "time-input" ? "border-orange-500 scale-[0.98] bg-zinc-800" : "border-white/10"}`}
+              >
+                <div className="text-5xl font-bold tracking-tight text-white flex gap-1 items-center">
+                  <span>{typedTime ? typedTime.slice(0, 5) : "--:--"}</span>
+                  <span className="text-2xl font-medium mt-3 ml-2 text-zinc-500">PM</span>
+                  {/* Blinking cursor */}
+                  <div className="w-[3px] h-10 bg-orange-500 rounded-full animate-pulse ml-1" />
+                </div>
+              </div>
+
+              <div
+                className={`mt-10 px-10 py-4 font-semibold text-lg rounded-full transition-all duration-300 ${activeTap === "confirm-time"
+                    ? "scale-[0.95] bg-orange-600 text-white"
+                    : selectedOption === "confirm-time"
+                      ? "bg-green-500 text-white shadow-[0_10px_30px_rgba(34,197,94,0.4)]"
+                      : "bg-white/10 text-white/50"
+                  }`}
+              >
+                Confirm Match Time
+              </div>
+            </motion.div>
+          )}
+
+          {/* STEP 6: SEARCHING (TINDER VIBES) */}
+          {step === 6 && (
+            <motion.div
+              key="step6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="w-full flex flex-col items-center justify-center mt-32 relative"
+            >
+              {/* Pulsing Match Radar Effect */}
+              <div className="relative w-40 h-40 flex items-center justify-center mb-16">
+                <img src={packImg4} className="w-16 h-16 rounded-full object-cover z-20 border-2 border-zinc-950 opacity-0 animate-[fade-in-out_2s_infinite_1s]" />
+                <img src={packImg6} className="absolute w-12 h-12 rounded-full object-cover z-20 border-2 border-zinc-950 -top-4 -right-2 opacity-0 animate-[fade-in-out_2s_infinite_0.5s]" />
+                <img src={packImg8} className="absolute w-14 h-14 rounded-full object-cover z-20 border-2 border-zinc-950 -bottom-2 -left-4 opacity-0 animate-[fade-in-out_2s_infinite_1.5s]" />
+
+                {/* Center Dot */}
+                <div className="w-20 h-20 rounded-full bg-orange-500/20 absolute z-10 flex items-center justify-center">
+                  <div className="w-4 h-4 rounded-full bg-orange-500 shadow-[0_0_20px_rgba(249,115,22,1)]" />
+                </div>
+
+                {/* Radar Rings */}
+                <motion.div
+                  animate={{ scale: [1, 3], opacity: [0.5, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+                  className="absolute inset-0 rounded-full border border-orange-500 bg-orange-500/5"
+                />
+                <motion.div
+                  animate={{ scale: [1, 3], opacity: [0.5, 0] }}
+                  transition={{ duration: 2, delay: 1, repeat: Infinity, ease: "easeOut" }}
+                  className="absolute inset-0 rounded-full border border-orange-500 bg-orange-500/5"
+                />
+              </div>
+
+              <h2 className="text-2xl font-light mb-12 tracking-wide text-zinc-300">
+                Finding potential buddies...
+              </h2>
+
+              <div className="flex flex-wrap justify-center gap-2 px-2">
+                {Object.values(filters).map((filter, i) => (
+                  <motion.div
+                    key={filter}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: i * 0.2, duration: 0.6 }}
+                    className="px-4 py-1.5 bg-zinc-900 border border-white/5 rounded-full text-zinc-400 font-medium text-xs tracking-wider"
+                  >
+                    {filter}
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* STEP 7: VERTICAL TINDER MATCH REVEAL */}
+          {step === 7 && (
+            <motion.div
+              key="step7"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8 }}
+              className="w-full mt-10 flex flex-col items-center overflow-hidden"
+            >
+              <h2 className="text-3xl font-light mb-8 tracking-wide text-zinc-200">
+                Buddy Found
+              </h2>
+
+              {/* Viewport for Vertical Roulette Reel */}
+              <div className="relative w-full h-[450px] flex items-center justify-center overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)] rounded-3xl">
+
+                {/* Center Selector Highlight Frame */}
+                <div className="absolute top-1/2 left-0 right-0 -mt-[175px] h-[350px] border-[2px] border-orange-500/40 rounded-[2rem] z-20 pointer-events-none shadow-[0_0_50px_rgba(249,115,22,0.15)] bg-gradient-to-t from-orange-500/5 to-transparent transition-all duration-[7000ms]" />
+
+                {/* Scrolling Vertical Track */}
+                <motion.div
+                  className="absolute flex flex-col items-center gap-6 w-full px-2"
+                  style={{ top: "50%" }}
+                  initial={{ y: "30%" }}
+                  animate={{
+                    // item height = 350, gap = 24. Math: -(index * 374) - (350/2)
+                    y: `calc(-175px - ${chosenBuddyIndex * (350 + 24)}px)`
+                  }}
+                  transition={{
+                    duration: 7.5,
+                    ease: [0.12, 0, 0.05, 1], // Perfect slow ease
+                  }}
+                >
+                  {displayRoulette.map((buddy, i) => (
+                    <div
+                      key={i}
+                      className={`w-full h-[350px] rounded-[2rem] overflow-hidden relative shrink-0 transition-all duration-[1000ms] ease-out border ${i === chosenBuddyIndex ? 'border-orange-500 scale-100 opacity-100 shadow-2xl' : 'border-white/5 opacity-50 scale-[0.92] grayscale'}`}
+                    >
+                      <img src={buddy.img} className="w-full h-full object-cover" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/30 to-transparent flex flex-col justify-end p-8">
+                        <h3 className="text-3xl font-semibold text-white tracking-tight">{buddy.name}</h3>
+                        <p className="font-medium text-orange-400 text-sm mt-1">{buddy.detail}</p>
+                      </div>
+                    </div>
+                  ))}
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* STEP 8: FINAL MATCH RESULT */}
+          {step === 8 && (
+            <motion.div
+              key="step8"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="w-full mt-10 flex flex-col items-center bg-zinc-900/40 p-6 rounded-[2rem] border border-white/5 relative overflow-hidden"
+            >
+              <div className="w-full aspect-[4/5] rounded-[1.5rem] overflow-hidden relative z-10 shrink-0 shadow-2xl mb-8">
+                <img src={chosenBuddy.img} className="w-full h-full object-cover" />
+                <div className="absolute top-4 left-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900/80 border border-white/10 text-[10px] font-semibold tracking-widest uppercase text-white backdrop-blur-md">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)]" />
+                  Matched
+                </div>
+              </div>
+
+              <div className="w-full flex justify-between items-end mb-6">
+                <div>
+                  <h2 className="text-4xl font-semibold text-white tracking-tight">{chosenBuddy.name}</h2>
+                  <p className="text-sm font-medium text-orange-400 mt-1">
+                    Matching Vibe: Perfect
+                  </p>
+                </div>
+                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-xl">
+                  👟
+                </div>
+              </div>
+
+              <p className="text-sm text-zinc-400 mb-8 leading-relaxed font-light text-left w-full border-b border-white/5 pb-6">
+                Consistently hits that occasional target pace around the CBD area. Ready to push your limits.
               </p>
 
-              <div className="grid grid-cols-2 gap-y-8 gap-x-6 mb-12">
-                <div>
-                  <div className="text-[10px] text-zinc-500 uppercase font-black tracking-widest mb-2">Activity</div>
-                  <div className="font-medium text-white text-lg">{filters.activity}</div>
+              <div className="grid grid-cols-2 gap-y-4 gap-x-2 w-full mb-8">
+                <div className="bg-zinc-800/30 p-3 rounded-xl border border-white/5">
+                  <div className="text-[9px] text-zinc-500 uppercase font-black tracking-widest mb-1">Time</div>
+                  <div className="font-medium text-white text-sm">{filters.time}</div>
                 </div>
-                <div>
-                  <div className="text-[10px] text-zinc-500 uppercase font-black tracking-widest mb-2">Level</div>
-                  <div className="font-medium text-white text-lg">{filters.level}</div>
-                </div>
-                <div>
-                  <div className="text-[10px] text-zinc-500 uppercase font-black tracking-widest mb-2">Location</div>
-                  <div className="font-medium text-white text-lg">{filters.location}</div>
-                </div>
-                <div>
-                  <div className="text-[10px] text-zinc-500 uppercase font-black tracking-widest mb-2">Time</div>
-                  <div className="font-medium text-white text-lg">{filters.time}</div>
+                <div className="bg-zinc-800/30 p-3 rounded-xl border border-white/5">
+                  <div className="text-[9px] text-zinc-500 uppercase font-black tracking-widest mb-1">Location</div>
+                  <div className="font-medium text-white text-sm">{filters.location}</div>
                 </div>
               </div>
 
-              <div className="flex gap-4 w-full pt-6 border-t border-white/5">
-                <button className="px-8 py-4 bg-orange-500 text-white font-medium rounded-2xl transition-all hover:bg-orange-600 hover:scale-[1.02] shadow-[0_10px_30px_-10px_rgba(249,115,22,0.4)] tracking-wide w-full max-w-xs">
-                  Message {chosenBuddy.name}
-                </button>
+              <button
+                className="w-full py-4 bg-orange-500 text-white font-semibold rounded-2xl transition-all hover:bg-orange-600 shadow-[0_10px_30px_-10px_rgba(249,115,22,0.4)] tracking-wide mb-3"
+              >
+                Send a Message
+              </button>
+              <button
+                onClick={() => setStep(0)}
+                className="w-full py-4 bg-transparent text-zinc-500 font-medium rounded-2xl hover:text-white transition-colors"
+              >
+                Preview Again
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Fake iOS Keyboard Overlay */}
+      <AnimatePresence>
+        {keyboardVisible && (
+          <motion.div
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            className="fixed bottom-0 left-0 right-0 bg-[#d1d5db] dark:bg-[#202022] pb-6 pt-2 px-2 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] flex flex-col items-center"
+          >
+            <div className="w-full max-w-md">
+              {/* Keyboard Header / Accessory View */}
+              <div className="flex justify-between px-2 py-2 mb-1">
+                <span className="text-xs font-semibold text-zinc-400">&lt; / &gt;</span>
+                <span className="text-xs font-semibold text-blue-500">Done</span>
+              </div>
+
+              {/* iOS Numeric Keypad */}
+              <div className="grid grid-cols-3 gap-2 px-1">
+                {["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "⌫"].map(key => {
+                  const isTapDown = activeTap === key;
+                  return (
+                    <div
+                      key={key}
+                      className={`h-[48px] rounded-lg flex items-center justify-center font-normal text-2xl transition-all duration-[50ms] ${key === "⌫" || key === "."
+                          ? "bg-[#acb3ba] dark:bg-[#343537] text-black dark:text-white/80"
+                          : "bg-white dark:bg-[#616265] text-black dark:text-white"
+                        } ${isTapDown ? "brightness-75 scale-[0.97]" : "shadow-[0_1px_1px_rgba(0,0,0,0.3)]"}`}
+                    >
+                      {key}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </motion.div>
         )}
-
       </AnimatePresence>
+
+      <style jsx global>{`
+        @keyframes fade-in-out {
+          0% { opacity: 0; transform: scale(0.9); }
+          50% { opacity: 0.8; transform: scale(1); }
+          100% { opacity: 0; transform: scale(1.1); }
+        }
+      `}</style>
     </div>
   );
 }
