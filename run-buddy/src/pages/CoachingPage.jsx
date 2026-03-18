@@ -1,11 +1,13 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import packImg2 from "../assets/images/rbmedals.jpg";
 import packImg4 from "../assets/images/rbthree.jpg";
 import packImg6 from "../assets/images/packImg6.jpg";
 import packImg7 from "../assets/images/packImgNew.jpg";
 
 export default function CoachingPage() {
+  const [coachingType, setCoachingType] = useState(null);
+
   const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {
@@ -54,7 +56,7 @@ export default function CoachingPage() {
   const tiers = [
     {
       name: "Kickstart",
-      price: "$99",
+      price: "$0",
       period: "/ month",
       desc: "Perfect for beginners tackling their first 5K or 10K.",
       features: [
@@ -67,7 +69,7 @@ export default function CoachingPage() {
     },
     {
       name: "The Regular",
-      price: "$149",
+      price: "$0",
       period: "/ month",
       desc: "For intermediate runners targeting a Half or Full Marathon.",
       features: [
@@ -80,7 +82,7 @@ export default function CoachingPage() {
     },
     {
       name: "Pro Elite",
-      price: "$249",
+      price: "$0",
       period: "/ month",
       desc: "1-on-1 bespoke coaching for serious PR chasers.",
       features: [
@@ -94,13 +96,64 @@ export default function CoachingPage() {
   ];
 
   const coaches = [
-    { name: "Coach Alex", specialty: "Marathon & Ultra Specialist", img: packImg4 },
-    { name: "Coach Jordan", specialty: "Speed & Track Focus", img: packImg2 },
-    { name: "Coach Taylor", specialty: "Biomechanics & Recovery", img: packImg7 },
+    { name: "Coach Jothem Manjanja", specialty: "Premium Performance Systems", img: packImg7 },
   ];
 
+  if (!coachingType) {
+    return (
+      <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center p-6 text-center pt-20">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-4xl md:text-6xl font-black text-white mb-16 tracking-tight"
+        >
+          How will you <span className="text-orange-500">train?</span>
+        </motion.h1>
+        <div className="flex flex-col md:flex-row gap-6 w-full max-w-4xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+            onClick={() => setCoachingType("online")}
+            className="flex-1 p-12 rounded-[2rem] bg-zinc-900/40 border border-white/5 hover:border-orange-500 hover:bg-zinc-900/80 hover:shadow-[0_0_40px_rgba(249,115,22,0.1)] cursor-pointer group transition-all duration-300"
+          >
+            <div className="w-16 h-16 rounded-full bg-orange-500/10 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:bg-orange-500/20 transition-all">
+              <svg className="w-8 h-8 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+              </svg>
+            </div>
+            <h2 className="text-3xl font-bold text-white mb-4 group-hover:text-orange-500 transition-colors">Online Coaching</h2>
+            <p className="text-zinc-400 font-light leading-relaxed">Bespoke training plans and weekly check-ins, delivered directly to your device anywhere in the world.</p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            onClick={() => setCoachingType("in-person")}
+            className="flex-1 p-12 rounded-[2rem] bg-zinc-900/40 border border-white/5 hover:border-orange-500 hover:bg-zinc-900/80 hover:shadow-[0_0_40px_rgba(249,115,22,0.1)] cursor-pointer group transition-all duration-300"
+          >
+            <div className="w-16 h-16 rounded-full bg-orange-500/10 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 group-hover:bg-orange-500/20 transition-all">
+              <svg className="w-8 h-8 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </div>
+            <h2 className="text-3xl font-bold text-white mb-4 group-hover:text-orange-500 transition-colors">In-Person Coaching</h2>
+            <p className="text-zinc-400 font-light leading-relaxed">Face-to-face biomechanics, pacing strategies, and track sessions tailored to perfect your form on the ground.</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-zinc-950 text-white font-sans selection:bg-orange-500/30 w-full overflow-x-hidden pt-20">
+    <motion.div
+      key="coaching-main"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="min-h-screen bg-zinc-950 text-white font-sans selection:bg-orange-500/30 w-full overflow-x-hidden pt-20"
+    >
 
       {/* 1. HERO SECTION */}
       <section className="relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden">
@@ -195,8 +248,8 @@ export default function CoachingPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: index * 0.15 }}
                 className={`flex flex-col p-10 rounded-[2.5rem] relative overflow-hidden ${tier.highlight
-                    ? "bg-zinc-900 border-2 border-orange-500/50 shadow-[0_20px_80px_rgba(249,115,22,0.15)] transform lg:-translate-y-4"
-                    : "bg-zinc-900/40 border border-white/10"
+                  ? "bg-zinc-900 border-2 border-orange-500/50 shadow-[0_20px_80px_rgba(249,115,22,0.15)] transform lg:-translate-y-4"
+                  : "bg-zinc-900/40 border border-white/10"
                   }`}
               >
                 {tier.highlight && (
@@ -224,8 +277,8 @@ export default function CoachingPage() {
                 </ul>
 
                 <button className={`w-full py-4 rounded-full font-bold tracking-wide transition-all ${tier.highlight
-                    ? "bg-orange-500 hover:bg-orange-600 text-white shadow-[0_0_20px_rgba(249,115,22,0.4)]"
-                    : "bg-white/10 hover:bg-white/20 text-white"
+                  ? "bg-orange-500 hover:bg-orange-600 text-white shadow-[0_0_20px_rgba(249,115,22,0.4)]"
+                  : "bg-white/10 hover:bg-white/20 text-white"
                   }`}>
                   Select {tier.name}
                 </button>
@@ -279,6 +332,6 @@ export default function CoachingPage() {
         </button>
       </section>
 
-    </div>
+    </motion.div>
   );
 }
