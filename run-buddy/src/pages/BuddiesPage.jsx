@@ -26,7 +26,7 @@ export default function BuddiesPage() {
     if (step === 7 && !wheelStopped) {
       const interval = setInterval(() => {
         setDotCount(d => (d + 1) % 4);
-      }, 400);
+      }, 800);
       return () => clearInterval(interval);
     }
   }, [step, wheelStopped]);
@@ -386,16 +386,16 @@ export default function BuddiesPage() {
             >
               <div className="hidden">{/* to satisfy map usage not rendering dotCount before definition without breaking component scope if called elsewhere */}</div>
               <h2 className="text-3xl font-light mb-8 tracking-wide text-zinc-200 flex items-center justify-center">
-                <span className="text-orange-500 font-medium w-[100px] text-right">Buddy</span>
+                <span className="text-white font-medium w-[100px] text-right">Buddy</span>
                 {!wheelStopped ? (
-                  <span className="text-orange-500 font-medium w-[80px] text-left">
+                  <span className="text-zinc-400 font-medium w-[80px] text-left">
                     {".".repeat(dotCount) + "\u00A0".repeat(3 - dotCount)}
                   </span>
                 ) : (
                   <motion.span
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.8 }}
+                    initial={{ opacity: 0, filter: "blur(4px)", x: -10 }}
+                    animate={{ opacity: 1, filter: "blur(0px)", x: 0 }}
+                    transition={{ duration: 1.5, ease: "easeInOut" }}
                     className="text-green-500 font-medium ml-2 w-[80px] text-left"
                   >
                     Found
