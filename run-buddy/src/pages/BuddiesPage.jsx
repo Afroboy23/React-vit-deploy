@@ -16,7 +16,9 @@ export default function BuddiesPage() {
   const [activeTap, setActiveTap] = useState(null);
   const [selectedOption, setSelectedOption] = useState(null);
   const [typedTime, setTypedTime] = useState("");
+  const [timePeriod, setTimePeriod] = useState("AM");
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const [keyboardType, setKeyboardType] = useState("abc");
 
   const filters = {
     activity: "Running",
@@ -79,12 +81,21 @@ export default function BuddiesPage() {
         if (isCancelled) return;
         setActiveTap(null);
 
-        // Slide up keyboard
+        // Slide up keyboard (Defaults to ABC)
+        setKeyboardType("abc");
         setKeyboardVisible(true);
-        await wait(1200);
+        await wait(1400);
         if (isCancelled) return;
 
-        // Simulate typing 6:30 PM
+        // Tap "123" to switch keyboard layouts
+        setActiveTap("123");
+        await wait(200);
+        setKeyboardType("123");
+        setActiveTap(null);
+        await wait(800);
+        if (isCancelled) return;
+
+        // Simulate typing 6:30
         const sequence = [
           { key: "0", val: "0" },
           { key: "6", val: "06" },
@@ -100,6 +111,14 @@ export default function BuddiesPage() {
           await wait(350); // read speed difference
           if (isCancelled) return;
         }
+
+        await wait(800);
+
+        // Tap AM/PM toggle
+        setActiveTap("am-pm-toggle");
+        await wait(250);
+        setTimePeriod("PM");
+        setActiveTap(null);
 
         await wait(800);
 
@@ -215,10 +234,10 @@ export default function BuddiesPage() {
                     >
                       <div
                         className={`w-full py-4 px-6 flex items-center justify-between rounded-xl border text-base transition-all duration-300 ease-out font-medium tracking-wide ${isTapDown
-                          ? 'scale-[0.98] bg-zinc-800 border-white/20 text-white'
-                          : isSelected
-                            ? 'border-orange-500 bg-orange-500 text-white shadow-[0_8px_30px_rgba(249,115,22,0.3)]'
-                            : 'border-white/5 bg-zinc-900/50 text-zinc-400'
+                            ? 'scale-[0.98] bg-zinc-800 border-white/20 text-white'
+                            : isSelected
+                              ? 'border-orange-500 bg-orange-500 text-white shadow-[0_8px_30px_rgba(249,115,22,0.3)]'
+                              : 'border-white/5 bg-zinc-900/50 text-zinc-400'
                           }`}
                       >
                         {option}
@@ -250,22 +269,34 @@ export default function BuddiesPage() {
               </h2>
 
               <div
-                className={`w-full max-w-[280px] bg-zinc-900 border py-6 rounded-2xl flex items-center justify-center transition-all duration-300 ${activeTap === "time-input" ? "border-orange-500 scale-[0.98] bg-zinc-800" : "border-white/10"}`}
+                className={`w-full max-w-[280px] bg-zinc-900 border py-6 rounded-2xl flex flex-col items-center justify-center transition-all duration-300 ${activeTap === "time-input" ? "border-orange-500 scale-[0.98] bg-zinc-800" : "border-white/10"}`}
               >
-                <div className="text-5xl font-bold tracking-tight text-white flex gap-1 items-center">
+                <div className="text-5xl font-bold tracking-tight text-white flex items-center justify-center">
                   <span>{typedTime ? typedTime.slice(0, 5) : "--:--"}</span>
-                  <span className="text-2xl font-medium mt-3 ml-2 text-zinc-500">PM</span>
                   {/* Blinking cursor */}
-                  <div className="w-[3px] h-10 bg-orange-500 rounded-full animate-pulse ml-1" />
+                  <div className="w-[3px] h-10 bg-orange-500 rounded-full animate-pulse ml-2" />
+                </div>
+
+                {/* AM/PM Toggle */}
+                <div
+                  className={`mt-4 w-32 h-10 bg-zinc-950 rounded-lg border border-white/5 flex items-center justify-between p-1 transition-all duration-200 ${activeTap === "am-pm-toggle" ? "scale-[0.95] ring-1 ring-orange-500" : ""
+                    }`}
+                >
+                  <div className={`flex-1 h-full rounded flex items-center justify-center text-sm font-semibold transition-colors duration-300 ${timePeriod === "AM" ? "bg-zinc-800 text-white shadow-sm" : "text-zinc-500"}`}>
+                    AM
+                  </div>
+                  <div className={`flex-1 h-full rounded flex items-center justify-center text-sm font-semibold transition-colors duration-300 ${timePeriod === "PM" ? "bg-zinc-800 text-white shadow-sm" : "text-zinc-500"}`}>
+                    PM
+                  </div>
                 </div>
               </div>
 
               <div
                 className={`mt-10 px-10 py-4 font-semibold text-lg rounded-full transition-all duration-300 ${activeTap === "confirm-time"
-                  ? "scale-[0.95] bg-orange-600 text-white"
-                  : selectedOption === "confirm-time"
-                    ? "bg-green-500 text-white shadow-[0_10px_30px_rgba(34,197,94,0.4)]"
-                    : "bg-white/10 text-white/50"
+                    ? "scale-[0.95] bg-orange-600 text-white"
+                    : selectedOption === "confirm-time"
+                      ? "bg-green-500 text-white shadow-[0_10px_30px_rgba(34,197,94,0.4)]"
+                      : "bg-white/10 text-white/50"
                   }`}
               >
                 Confirm Match Time
@@ -428,7 +459,13 @@ export default function BuddiesPage() {
                 Send a Message
               </button>
               <button
-                onClick={() => setStep(0)}
+                onClick={() => {
+                  setStep(0);
+                  setIsPlaying(false);
+                  setTypedTime("");
+                  setTimePeriod("AM");
+                  setKeyboardType("abc");
+                }}
                 className="w-full py-4 bg-transparent text-zinc-500 font-medium rounded-2xl hover:text-white transition-colors"
               >
                 Preview Again
@@ -446,32 +483,74 @@ export default function BuddiesPage() {
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed bottom-0 left-0 right-0 bg-[#d1d5db] dark:bg-[#202022] pb-6 pt-2 px-2 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] flex flex-col items-center"
+            className="fixed bottom-0 left-0 right-0 bg-[#d1d5db] dark:bg-[#1c1c1e] pb-6 pt-2 px-1 z-50 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] flex flex-col items-center"
           >
             <div className="w-full max-w-md">
               {/* Keyboard Header / Accessory View */}
-              <div className="flex justify-between px-2 py-2 mb-1">
+              <div className="flex justify-between px-3 py-2 mb-1">
                 <span className="text-xs font-semibold text-zinc-400">&lt; / &gt;</span>
-                <span className="text-xs font-semibold text-blue-500">Done</span>
+                <span className="text-sm font-semibold text-blue-500 tracking-wide">Done</span>
               </div>
 
-              {/* iOS Numeric Keypad */}
-              <div className="grid grid-cols-3 gap-2 px-1">
-                {["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "⌫"].map(key => {
-                  const isTapDown = activeTap === key;
-                  return (
-                    <div
-                      key={key}
-                      className={`h-[48px] rounded-lg flex items-center justify-center font-normal text-2xl transition-all duration-[50ms] ${key === "⌫" || key === "."
-                        ? "bg-[#acb3ba] dark:bg-[#343537] text-black dark:text-white/80"
-                        : "bg-white dark:bg-[#616265] text-black dark:text-white"
-                        } ${isTapDown ? "brightness-75 scale-[0.97]" : "shadow-[0_1px_1px_rgba(0,0,0,0.3)]"}`}
-                    >
-                      {key}
+              {keyboardType === "abc" ? (
+                // iOS ABC Keyboard
+                <div className="flex flex-col gap-2.5 px-0.5 pb-2">
+                  <div className="flex justify-center gap-1.5">
+                    {["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"].map(key => (
+                      <div key={key} className={`h-[44px] flex-1 rounded-md flex items-center justify-center font-medium text-[22px] shadow-[0_1px_1px_rgba(0,0,0,0.3)] transition-all duration-[50ms] ${activeTap === key ? "bg-[#acb3ba] dark:bg-[#4b4b4d]" : "bg-white dark:bg-[#6b6b6d]"} text-black dark:text-white`}>
+                        {key}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex justify-center gap-1.5 px-[5%]">
+                    {["A", "S", "D", "F", "G", "H", "J", "K", "L"].map(key => (
+                      <div key={key} className={`h-[44px] flex-1 rounded-md flex items-center justify-center font-medium text-[22px] shadow-[0_1px_1px_rgba(0,0,0,0.3)] transition-all duration-[50ms] ${activeTap === key ? "bg-[#acb3ba] dark:bg-[#4b4b4d]" : "bg-white dark:bg-[#6b6b6d]"} text-black dark:text-white`}>
+                        {key}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex justify-center gap-1.5">
+                    <div className="h-[44px] w-[12%] rounded-md flex items-center justify-center text-lg bg-[#acb3ba] dark:bg-[#4b4b4d] text-black dark:text-[#c4c4c6] shadow-[0_1px_1px_rgba(0,0,0,0.3)]">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
                     </div>
-                  );
-                })}
-              </div>
+                    {["Z", "X", "C", "V", "B", "N", "M"].map(key => (
+                      <div key={key} className={`h-[44px] w-[10%] rounded-md flex items-center justify-center font-medium text-[22px] shadow-[0_1px_1px_rgba(0,0,0,0.3)] transition-all duration-[50ms] ${activeTap === key ? "bg-[#acb3ba] dark:bg-[#4b4b4d]" : "bg-white dark:bg-[#6b6b6d]"} text-black dark:text-white`}>
+                        {key}
+                      </div>
+                    ))}
+                    <div className="h-[44px] w-[12%] rounded-md flex items-center justify-center text-lg bg-[#acb3ba] dark:bg-[#4b4b4d] text-black dark:text-[#c4c4c6] shadow-[0_1px_1px_rgba(0,0,0,0.3)]">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2zM18 9l-6 6M12 9l6 6" /></svg>
+                    </div>
+                  </div>
+                  <div className="flex justify-center gap-1.5 mt-0.5">
+                    <div
+                      className={`h-[44px] w-1/4 rounded-md flex items-center justify-center font-normal text-lg shadow-[0_1px_1px_rgba(0,0,0,0.3)] transition-all duration-[50ms] ${activeTap === "123" ? "brightness-75 scale-[0.97]" : ""} bg-[#acb3ba] dark:bg-[#4b4b4d] text-black dark:text-white tracking-wide`}
+                    >
+                      123
+                    </div>
+                    <div className="h-[44px] flex-1 rounded-md flex items-center justify-center font-normal text-lg bg-white dark:bg-[#6b6b6d] text-black dark:text-white shadow-[0_1px_1px_rgba(0,0,0,0.3)]">space</div>
+                    <div className="h-[44px] w-1/4 rounded-md flex items-center justify-center font-normal text-lg bg-[#acb3ba] dark:bg-[#4b4b4d] text-black dark:text-white shadow-[0_1px_1px_rgba(0,0,0,0.3)] tracking-wide">return</div>
+                  </div>
+                </div>
+              ) : (
+                // iOS Numeric Keypad
+                <div className="grid grid-cols-3 gap-2 px-1 pb-2">
+                  {["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "⌫"].map(key => {
+                    const isTapDown = activeTap === key;
+                    return (
+                      <div
+                        key={key}
+                        className={`h-[48px] rounded-lg flex items-center justify-center font-normal text-2xl transition-all duration-[50ms] ${key === "⌫" || key === "."
+                            ? "bg-[#acb3ba] dark:bg-[#4b4b4d] text-black dark:text-white"
+                            : "bg-white dark:bg-[#6b6b6d] text-black dark:text-white"
+                          } ${isTapDown ? "brightness-75 scale-[0.97]" : "shadow-[0_1px_1px_rgba(0,0,0,0.3)]"}`}
+                      >
+                        {key === "⌫" ? <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2zM18 9l-6 6M12 9l6 6" /></svg> : key}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </motion.div>
         )}
