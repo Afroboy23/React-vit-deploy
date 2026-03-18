@@ -206,7 +206,7 @@ export default function CoachingPage() {
             transition={{ duration: 0.8 }}
             className="mb-20 md:w-2/3"
           >
-            <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6">Built by runners,<br /> <span className="text-zinc-500">for humans.</span></h2>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6">Designed for<br /> <span className="text-zinc-500">every Pace.</span></h2>
             <p className="text-xl text-zinc-400 font-light leading-relaxed">
               We don't believe in copy-paste PDF plans. We believe in dynamic, data-backed coaching that adapts to your life.
             </p>
