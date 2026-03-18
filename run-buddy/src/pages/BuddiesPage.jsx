@@ -10,6 +10,8 @@ import packImg8 from "../assets/images/packImg8.jpg";
 
 export default function BuddiesPage() {
   const [step, setStep] = useState(0);
+  const [highlightedOption, setHighlightedOption] = useState(null);
+  const [typedTime, setTypedTime] = useState("");
 
   // Pre-defined selections based on user requirement
   const filters = {
@@ -31,16 +33,49 @@ export default function BuddiesPage() {
 
   const advanceStep = () => setStep(s => s + 1);
 
-  // Auto-advance logic for Searching (Step 6) and Match (Step 7) states
+  // Auto-playing demo sequence
   useEffect(() => {
-    if (step === 6) {
-      const timer = setTimeout(() => setStep(7), 3000); // 3 seconds searching
-      return () => clearTimeout(timer);
+    let timers = [];
+
+    if (step >= 1 && step <= 4) {
+      const targets = {
+        1: "Running",
+        2: "Occasional",
+        3: "Auckland CBD",
+        4: "Any"
+      };
+
+      const t1 = setTimeout(() => setHighlightedOption(targets[step]), 1000);
+      const t2 = setTimeout(() => {
+        setHighlightedOption(null);
+        setStep(s => s + 1);
+      }, 1800);
+      timers.push(t1, t2);
     }
-    if (step === 7) {
-      const timer = setTimeout(() => setStep(8), 5000); // 5 seconds roulette spin
-      return () => clearTimeout(timer);
+    else if (step === 5) {
+      // Simulate typing for Time
+      const typeSequence = ["1", "18", "18:", "18:3", "18:30"];
+      typeSequence.forEach((char, index) => {
+        timers.push(setTimeout(() => setTypedTime(char), 500 + (index * 150)));
+      });
+      // Highlight confirm button
+      timers.push(setTimeout(() => setHighlightedOption("Confirm"), 1800));
+      // Advance step
+      timers.push(setTimeout(() => {
+        setHighlightedOption(null);
+        setStep(6);
+      }, 2600));
     }
+    else if (step === 6) {
+      // Searching state
+      timers.push(setTimeout(() => setStep(7), 4000));
+    }
+    else if (step === 7) {
+      // Roulette rolling state
+      timers.push(setTimeout(() => setStep(8), 5000));
+    }
+
+    return () => timers.forEach(clearTimeout);
   }, [step]);
 
   // Candidates for roulette
@@ -52,13 +87,10 @@ export default function BuddiesPage() {
     { name: "Casey", img: packImg7, detail: "Good • Takapuna" },
   ];
 
-  // Create a long array for the roulette ticker to spin through
   const displayRoulette = Array.from({ length: 30 }, (_, i) => rouletteCandidates[i % rouletteCandidates.length]);
-  // The chosen buddy is always the one it lands on (index 26)
   const chosenBuddyIndex = 26;
   const chosenBuddy = displayRoulette[chosenBuddyIndex];
 
-  // Common animation variants for selection items
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: (i) => ({ opacity: 1, y: 0, transition: { delay: i * 0.05, duration: 0.4 } })
@@ -76,23 +108,18 @@ export default function BuddiesPage() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, y: -50, scale: 0.95 }}
             transition={{ duration: 0.6 }}
-            className="w-full max-w-4xl text-center mt-12"
+            className="w-full max-w-4xl text-center mt-32 cursor-pointer group"
+            onClick={advanceStep}
           >
-            <div className="inline-flex items-center justify-center px-4 py-1.5 mb-8 rounded-full bg-orange-500/20 border border-orange-500/30 text-orange-400 text-xs font-black tracking-widest uppercase">
-              Feature Preview
+            <div className="inline-flex items-center justify-center px-4 py-1.5 mb-8 rounded-full bg-orange-500/20 border border-orange-500/30 text-orange-400 text-xs font-black tracking-widest uppercase transition-all group-hover:bg-orange-500/30 group-hover:scale-105">
+              Coming Soon
             </div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-8">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 transition-transform group-hover:scale-105 duration-500">
               Choose a <span className="text-orange-500">Buddy</span>
             </h1>
-            <p className="text-xl md:text-2xl text-zinc-400 mb-16 max-w-2xl mx-auto leading-relaxed">
-              Find the perfect training partner based on your exact pace, location, and vibe.
+            <p className="text-xl md:text-2xl text-zinc-400 mb-16 max-w-2xl mx-auto leading-relaxed group-hover:text-zinc-300 transition-colors">
+              Click anywhere in this section to begin the automated feature preview.
             </p>
-            <button
-              onClick={advanceStep}
-              className="px-12 py-5 bg-white text-black hover:bg-orange-500 hover:text-white font-black text-xl tracking-wide rounded-full transition-all hover:scale-105 shadow-[0_0_40px_-10px_rgba(255,255,255,0.2)] hover:shadow-[0_0_40px_-10px_rgba(249,115,22,0.5)]"
-            >
-              Start Demo
-            </button>
           </motion.div>
         )}
 
@@ -106,7 +133,7 @@ export default function BuddiesPage() {
             transition={{ duration: 0.4 }}
             className="w-full max-w-3xl mt-12"
           >
-            <h2 className="text-4xl md:text-5xl font-black mb-12 text-center tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-black mb-12 text-center tracking-tight text-white">
               {step === 1 && "What's the play today?"}
               {step === 2 && "What's your current level?"}
               {step === 3 && "Where are we meeting?"}
@@ -122,37 +149,35 @@ export default function BuddiesPage() {
                 custom={0}
                 className="flex flex-col items-center"
               >
-                <input
-                  type="time"
-                  defaultValue="18:30"
-                  className="appearance-none bg-zinc-900/80 border border-white/20 p-6 rounded-2xl text-5xl font-black text-center text-white focus:outline-none focus:border-orange-500 transition-all shadow-inner w-64 mb-8"
-                  style={{ colorScheme: "dark" }}
-                />
-                <button
-                  onClick={advanceStep}
-                  className="px-12 py-5 bg-orange-500 text-white font-black text-xl tracking-wide rounded-full transition-all hover:scale-105 shadow-[0_0_40px_-10px_rgba(249,115,22,0.5)]"
+                <div className="appearance-none bg-zinc-900/80 border border-white/20 p-6 rounded-2xl text-5xl font-black text-center text-white transition-all shadow-inner w-64 mb-8 flex items-center justify-center min-h-[100px]">
+                  {typedTime || <span className="opacity-20 text-4xl">--:--</span>}
+                </div>
+                <div
+                  className={`px-12 py-5 font-black text-xl tracking-wide rounded-full transition-all duration-500 ${highlightedOption === "Confirm" ? "bg-orange-500 text-white scale-105 shadow-[0_0_40px_-10px_rgba(249,115,22,0.8)]" : "bg-white/10 text-white/50"}`}
                 >
                   Confirm Time
-                </button>
+                </div>
               </motion.div>
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {selections[step].map((option, i) => (
-                  <motion.div
-                    key={option}
-                    custom={i}
-                    initial="hidden"
-                    animate="visible"
-                    variants={itemVariants}
-                  >
-                    <button
-                      onClick={advanceStep}
-                      className="w-full p-6 h-full text-center rounded-2xl border border-white/10 bg-zinc-900/50 hover:bg-orange-500/10 hover:border-orange-500 text-lg font-bold transition-all hover:scale-105 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                {selections[step].map((option, i) => {
+                  const isHighlighted = highlightedOption === option;
+                  return (
+                    <motion.div
+                      key={option}
+                      custom={i}
+                      initial="hidden"
+                      animate="visible"
+                      variants={itemVariants}
                     >
-                      {option}
-                    </button>
-                  </motion.div>
-                ))}
+                      <div
+                        className={`w-full p-6 h-full text-center rounded-2xl border text-lg font-bold transition-all duration-500 ${isHighlighted ? 'border-orange-500 bg-orange-500/20 scale-105 text-orange-400 shadow-[0_0_30px_rgba(249,115,22,0.4)]' : 'border-white/10 bg-zinc-900/50 text-zinc-400'}`}
+                      >
+                        {option}
+                      </div>
+                    </motion.div>
+                  );
+                })}
               </div>
             )}
 
@@ -162,7 +187,7 @@ export default function BuddiesPage() {
                 <div
                   key={dot}
                   className={`h-1.5 rounded-full transition-all duration-500 ${step === dot ? "w-8 bg-orange-500" :
-                    step > dot ? "w-2 bg-orange-500/50" : "w-2 bg-zinc-800"
+                      step > dot ? "w-2 bg-orange-500/50" : "w-2 bg-zinc-800"
                     }`}
                 />
               ))}
@@ -184,12 +209,12 @@ export default function BuddiesPage() {
               <motion.div
                 animate={{ rotate: 360, scale: [1, 1.1, 1] }}
                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 rounded-full border-t-4 border-l-4 border-orange-500 rounded-full opacity-80"
+                className="absolute inset-0 rounded-full border-t-4 border-l-4 border-orange-500 opacity-80"
               />
               <motion.div
                 animate={{ rotate: -360, scale: [1.1, 1, 1.1] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-4 rounded-full border-b-4 border-r-4 border-amber-400 rounded-full opacity-60"
+                className="absolute inset-4 rounded-full border-b-4 border-r-4 border-amber-400 opacity-60"
               />
               <div className="text-4xl">🏃</div>
             </div>
@@ -197,7 +222,7 @@ export default function BuddiesPage() {
             <motion.h2
               animate={{ opacity: [0.5, 1, 0.5] }}
               transition={{ duration: 1.5, repeat: Infinity }}
-              className="text-4xl md:text-5xl font-black mb-12 tracking-wider"
+              className="text-4xl md:text-5xl font-black mb-12 tracking-wider text-white"
             >
               SEARCHING FOR BUDDY...
             </motion.h2>
@@ -232,7 +257,7 @@ export default function BuddiesPage() {
               Buddy Found
             </h2>
 
-            {/* Viewport for Roulette Reel */}
+            {/* Viewport for Vertical Roulette Reel */}
             <div className="relative w-full max-w-md h-[500px] flex items-center justify-center overflow-hidden mask-image-fade mx-auto">
               {/* Center Selector Highlight */}
               <div className="absolute top-1/2 left-1/2 -mt-40 -ml-32 w-64 h-80 border-2 border-orange-500 rounded-3xl z-20 pointer-events-none shadow-[0_0_50px_rgba(249,115,22,0.3)] bg-orange-500/10 backdrop-blur-[2px]" />
@@ -247,7 +272,7 @@ export default function BuddiesPage() {
                 }}
                 transition={{
                   duration: 4.5,
-                  ease: [0.15, 0.0, 0.1, 1], // Custom slow-down easing (like a roulette wheel)
+                  ease: [0.15, 0.0, 0.1, 1],
                 }}
               >
                 {displayRoulette.map((buddy, i) => (
@@ -276,10 +301,8 @@ export default function BuddiesPage() {
             transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
             className="w-full max-w-4xl mt-12 flex flex-col md:flex-row gap-8 items-center bg-zinc-900/50 p-8 md:p-12 rounded-3xl border border-orange-500/30 shadow-[0_0_80px_-20px_rgba(249,115,22,0.3)] relative overflow-hidden"
           >
-            {/* Background Glow */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-orange-600/20 blur-[100px] rounded-full mix-blend-screen pointer-events-none" />
 
-            {/* Profile Image Column */}
             <div className="w-full md:w-1/2 aspect-[3/4] rounded-2xl overflow-hidden relative border border-white/10 z-10 shrink-0">
               <img src={chosenBuddy.img} className="w-full h-full object-cover" />
               <div className="absolute top-4 left-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/20 border border-green-500/50 text-xs font-black tracking-widest uppercase text-green-400 backdrop-blur-md">
@@ -288,10 +311,9 @@ export default function BuddiesPage() {
               </div>
             </div>
 
-            {/* Profile Details Column */}
             <div className="w-full md:w-1/2 flex flex-col z-10">
               <h4 className="text-orange-500 font-bold tracking-widest uppercase text-sm mb-2">RUN BUDDY MATCH</h4>
-              <h2 className="text-5xl md:text-6xl font-black mb-6">{chosenBuddy.name}</h2>
+              <h2 className="text-5xl md:text-6xl font-black mb-6 text-white">{chosenBuddy.name}</h2>
 
               <p className="text-lg text-zinc-300 mb-8 leading-relaxed">
                 Matches exactly with your selected vibe. Based in the CBD and consistently hits that occasional target pace.
@@ -321,7 +343,7 @@ export default function BuddiesPage() {
                   onClick={() => setStep(0)}
                   className="px-6 py-4 bg-zinc-800 text-white font-bold rounded-xl transition-all hover:bg-zinc-700 w-1/3"
                 >
-                  Restart
+                  Restart Demo
                 </button>
                 <button className="px-6 py-4 bg-orange-500 text-white font-bold rounded-xl transition-all hover:bg-orange-600 w-2/3 shadow-[0_0_30px_-5px_rgba(249,115,22,0.4)]">
                   Message {chosenBuddy.name}
