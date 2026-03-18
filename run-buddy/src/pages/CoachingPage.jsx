@@ -200,8 +200,8 @@ export default function CoachingPage() {
       <section className="w-full py-32 bg-zinc-950 border-t border-white/5 relative z-10">
         <div className="container mx-auto px-6">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, filter: "blur(10px)" }}
+            whileInView={{ opacity: 1, filter: "blur(0px)" }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
             className="mb-20 md:w-2/3"
@@ -216,8 +216,8 @@ export default function CoachingPage() {
             {philosophyItems.map((item, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: -40, filter: "blur(8px)" }}
+                whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="p-8 rounded-[2rem] bg-zinc-900/40 border border-white/5 hover:bg-zinc-900/80 transition-colors"
@@ -239,12 +239,12 @@ export default function CoachingPage() {
             <p className="text-xl text-zinc-400 font-light max-w-2xl">Whether you're lacing up for your first 5K or hunting a Boston Qualifier, we have a tier for you.</p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full max-w-6xl [perspective:1000px]">
             {tiers.map((tier, index) => (
               <motion.div
                 key={tier.name}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, rotateY: 30, scale: 0.9 }}
+                whileInView={{ opacity: 1, rotateY: 0, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: index * 0.15 }}
                 className={`flex flex-col p-10 rounded-[2.5rem] relative overflow-hidden ${tier.highlight
@@ -302,8 +302,8 @@ export default function CoachingPage() {
             {coaches.map((coach, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, rotateZ: index % 2 === 0 ? 5 : -5, scale: 0.8 }}
+                whileInView={{ opacity: 1, rotateZ: 0, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: index * 0.1 }}
                 className="group relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-zinc-900 border border-white/5 cursor-pointer"
