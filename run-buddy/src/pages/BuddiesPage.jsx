@@ -19,6 +19,17 @@ export default function BuddiesPage() {
   const [timePeriod, setTimePeriod] = useState("AM");
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const [keyboardType, setKeyboardType] = useState("abc");
+  const [wheelStopped, setWheelStopped] = useState(false);
+  const [dotCount, setDotCount] = useState(0);
+
+  useEffect(() => {
+    if (step === 7 && !wheelStopped) {
+      const interval = setInterval(() => {
+        setDotCount(d => (d + 1) % 4);
+      }, 400);
+      return () => clearInterval(interval);
+    }
+  }, [step, wheelStopped]);
 
   const filters = {
     activity: "Running",
@@ -135,12 +146,17 @@ export default function BuddiesPage() {
       }
       else if (step === 6) {
         // Searching state - Mobile Tinder matching energy
-        await wait(5000);
+        await wait(8500);
         if (!isCancelled) setStep(7);
       }
       else if (step === 7) {
         // Vertical Tinder slot machine reveal
-        await wait(8000);
+        setWheelStopped(false);
+        await wait(7500);
+        if (isCancelled) return;
+
+        setWheelStopped(true);
+        await wait(2800);
         if (!isCancelled) setStep(8);
       }
     };
@@ -234,10 +250,10 @@ export default function BuddiesPage() {
                     >
                       <div
                         className={`w-full py-4 px-6 flex items-center justify-between rounded-xl border text-base transition-all duration-300 ease-out font-medium tracking-wide ${isTapDown
-                            ? 'scale-[0.98] bg-zinc-800 border-white/20 text-white'
-                            : isSelected
-                              ? 'border-orange-500 bg-orange-500 text-white shadow-[0_8px_30px_rgba(249,115,22,0.3)]'
-                              : 'border-white/5 bg-zinc-900/50 text-zinc-400'
+                          ? 'scale-[0.98] bg-zinc-800 border-white/20 text-white'
+                          : isSelected
+                            ? 'border-orange-500 bg-orange-500 text-white shadow-[0_8px_30px_rgba(249,115,22,0.3)]'
+                            : 'border-white/5 bg-zinc-900/50 text-zinc-400'
                           }`}
                       >
                         {option}
@@ -293,10 +309,10 @@ export default function BuddiesPage() {
 
               <div
                 className={`mt-10 px-10 py-4 font-semibold text-lg rounded-full transition-all duration-300 ${activeTap === "confirm-time"
-                    ? "scale-[0.95] bg-orange-600 text-white"
-                    : selectedOption === "confirm-time"
-                      ? "bg-green-500 text-white shadow-[0_10px_30px_rgba(34,197,94,0.4)]"
-                      : "bg-white/10 text-white/50"
+                  ? "scale-[0.95] bg-orange-600 text-white"
+                  : selectedOption === "confirm-time"
+                    ? "bg-green-500 text-white shadow-[0_10px_30px_rgba(34,197,94,0.4)]"
+                    : "bg-white/10 text-white/50"
                   }`}
               >
                 Confirm Match Time
@@ -368,8 +384,23 @@ export default function BuddiesPage() {
               transition={{ duration: 0.8 }}
               className="w-full mt-10 flex flex-col items-center overflow-hidden"
             >
-              <h2 className="text-3xl font-light mb-8 tracking-wide text-zinc-200">
-                Buddy Found
+              <div className="hidden">{/* to satisfy map usage not rendering dotCount before definition without breaking component scope if called elsewhere */}</div>
+              <h2 className="text-3xl font-light mb-8 tracking-wide text-zinc-200 flex items-center justify-center">
+                <span className="text-orange-500 font-medium w-[100px] text-right">Buddy</span>
+                {!wheelStopped ? (
+                  <span className="text-orange-500 font-medium w-[80px] text-left">
+                    {".".repeat(dotCount) + "\u00A0".repeat(3 - dotCount)}
+                  </span>
+                ) : (
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.8 }}
+                    className="text-green-500 font-medium ml-2 w-[80px] text-left"
+                  >
+                    Found
+                  </motion.span>
+                )}
               </h2>
 
               {/* Viewport for Vertical Roulette Reel */}
@@ -541,8 +572,8 @@ export default function BuddiesPage() {
                       <div
                         key={key}
                         className={`h-[48px] rounded-lg flex items-center justify-center font-normal text-2xl transition-all duration-[50ms] ${key === "⌫" || key === "."
-                            ? "bg-[#acb3ba] dark:bg-[#4b4b4d] text-black dark:text-white"
-                            : "bg-white dark:bg-[#6b6b6d] text-black dark:text-white"
+                          ? "bg-[#acb3ba] dark:bg-[#4b4b4d] text-black dark:text-white"
+                          : "bg-white dark:bg-[#6b6b6d] text-black dark:text-white"
                           } ${isTapDown ? "brightness-75 scale-[0.97]" : "shadow-[0_1px_1px_rgba(0,0,0,0.3)]"}`}
                       >
                         {key === "⌫" ? <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2zM18 9l-6 6M12 9l6 6" /></svg> : key}
