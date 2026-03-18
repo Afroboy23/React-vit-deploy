@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
 import ShopPage from "./pages/ShopPage";
 import BuddiesPage from "./pages/BuddiesPage";
+import CoachingPage from "./pages/CoachingPage";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={<ShopPage />} />
         <Route path="/buddies" element={<BuddiesPage />} />
+        <Route path="/coaching" element={<CoachingPage />} />
       </Routes>
     </div>
   );

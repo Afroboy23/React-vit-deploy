@@ -1,8 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import runBuddyLogo from "../assets/images/rb.jpg";
 
 export default function Navbar() {
+  const location = useLocation();
+  const isActive = (path) => location.pathname === path ? "text-white" : "";
+
   return (
     <nav className="fixed w-full z-50 top-0 px-6 py-4 flex justify-between items-center bg-zinc-950/80 backdrop-blur-md border-b border-white/5">
       <div className="flex items-center gap-2">
@@ -12,12 +15,12 @@ export default function Navbar() {
         <Link to="/" className="font-bold text-xl tracking-tight hidden sm:block text-white">RunBuddy.</Link>
       </div>
       <div className="hidden md:flex items-center gap-8 text-sm font-bold text-zinc-400">
-        <Link to="/" className="hover:text-white transition-colors text-white">Home</Link>
-        <Link to="/group-runs" className="hover:text-white transition-colors">Group Runs</Link>
-        <Link to="/coaching" className="hover:text-white transition-colors">Coaching</Link>
-        <Link to="/pricing" className="hover:text-white transition-colors">Pricing</Link>
-        <Link to="/shop" className="hover:text-white transition-colors text-white">Shop</Link>
-        <Link to="/buddies" className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity">
+        <Link to="/" className={`hover:text-white transition-colors ${isActive('/')}`}>Home</Link>
+        <Link to="/group-runs" className={`hover:text-white transition-colors ${isActive('/group-runs')}`}>Group Runs</Link>
+        <Link to="/coaching" className={`hover:text-white transition-colors ${isActive('/coaching')}`}>Coaching</Link>
+        <Link to="/pricing" className={`hover:text-white transition-colors ${isActive('/pricing')}`}>Pricing</Link>
+        <Link to="/shop" className={`hover:text-white transition-colors ${isActive('/shop')}`}>Shop</Link>
+        <Link to="/buddies" className={`flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity ${isActive('/buddies')}`}>
           <span>Choose Buddy</span>
           <span className="text-[10px] px-1.5 py-0.5 rounded bg-orange-500/20 text-orange-400 uppercase tracking-wider font-black">Coming Soon</span>
         </Link>
