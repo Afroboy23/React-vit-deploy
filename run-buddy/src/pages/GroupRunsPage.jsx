@@ -10,7 +10,7 @@ export default function GroupRunsPage() {
   // Simulate a live distance counter during the drawing animation
   useEffect(() => {
     let startTime = null;
-    const duration = 6000; // 6 seconds to draw the map
+    const duration = 8000; // 8 seconds for the cinematic sequence
 
     const animateDistance = (timestamp) => {
       if (!startTime) startTime = timestamp;
@@ -73,35 +73,56 @@ export default function GroupRunsPage() {
         </motion.div>
       </div>
 
-      {/* THE RUN TRACE MAP (New Zealand SVG) */}
-      <div className="relative z-10 w-full max-w-2xl h-[60vh] md:h-[70vh] flex items-center justify-center -mt-10">
-        {/* We invert the SVG Y-axis using transform, as standard top-down SVGs match map-coordinate bounding boxes */}
-        <svg
-          viewBox="0 0 1024 1024"
-          className="w-full h-full drop-shadow-[0_0_20px_rgba(249,115,22,0.8)] filter transition-all duration-1000"
-          style={{ filter: isFinished ? 'drop-shadow(0 0 30px rgba(249,115,22,1))' : 'drop-shadow(0 0 15px rgba(249,115,22,0.5))' }}
+      {/* THE RUN TRACE MAP WITH CINEMATIC 3D CAMERA */}
+      <div className="relative z-10 w-full h-[60vh] md:h-[70vh] flex items-center justify-center -mt-10 [perspective:2000px]">
+        <motion.div
+          initial={{
+            scale: 15,
+            rotateX: 75,
+            y: "70%",
+            opacity: 0
+          }}
+          animate={{
+            scale: 1,
+            rotateX: 0,
+            y: "0%",
+            opacity: 1
+          }}
+          transition={{
+            duration: 9,
+            ease: [0.16, 1, 0.3, 1], // Highly cinematic ease out for exponential smooth deceleration
+            opacity: { duration: 1.5 }
+          }}
+          className="w-full max-w-2xl h-full flex items-center justify-center origin-bottom transform-gpu"
         >
-          <g transform="translate(0, 1024) scale(0.1, -0.1)">
-            {nzPaths.map((d, i) => (
-              <motion.path
-                key={i}
-                d={d}
-                fill="none"
-                stroke="#f97316" /* Tailwind orange-500 */
-                strokeWidth="20"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                initial={{ pathLength: 0, opacity: 0.8 }}
-                animate={{ pathLength: 1, opacity: 1 }}
-                transition={{
-                  duration: 6,
-                  ease: [0.25, 1, 0.5, 1], // easeOutQuart 
-                  delay: 0.5 // brief pause at the beginning
-                }}
-              />
-            ))}
-          </g>
-        </svg>
+          {/* Invert the SVG Y-axis using transform, as standard top-down SVGs match map-coordinate bounding boxes */}
+          <svg
+            viewBox="0 0 1024 1024"
+            className="w-full h-full drop-shadow-[0_0_20px_rgba(249,115,22,0.8)] filter transition-all duration-1000"
+            style={{ filter: isFinished ? 'drop-shadow(0 0 40px rgba(249,115,22,1))' : 'drop-shadow(0 0 20px rgba(249,115,22,0.6))' }}
+          >
+            <g transform="translate(0, 1024) scale(0.1, -0.1)">
+              {nzPaths.map((d, i) => (
+                <motion.path
+                  key={i}
+                  d={d}
+                  fill="none"
+                  stroke="#f97316" /* Tailwind orange-500 */
+                  strokeWidth="20"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  initial={{ pathLength: 0, opacity: 0.9 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  transition={{
+                    duration: 8,
+                    ease: "easeInOut", // Smooth mapping speed inside the curve
+                    delay: 0.2
+                  }}
+                />
+              ))}
+            </g>
+          </svg>
+        </motion.div>
       </div>
 
       {/* FINAL STATE TITLE */}
