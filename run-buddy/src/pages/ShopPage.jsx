@@ -6,7 +6,7 @@ import lookbook2 from "../assets/images/rbthree.jpg";
 import lookbook3 from "../assets/images/rblskd.jpg";
 import lookbook4 from "../assets/images/packImg6.jpg";
 import productImg1 from "../assets/images/rbjay.jpg";
-import productImg2 from "../assets/images/rbfour.jpg";
+import productImg2 from "../assets/images/rbmedals.jpg";
 import productImg3 from "../assets/images/rbheadshot.jpg";
 
 export default function ShopPage() {
