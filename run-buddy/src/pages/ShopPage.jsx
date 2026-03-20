@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import socksImg from "../assets/images/rb-sock-nobg.png";
 import lookbook1 from "../assets/images/packImgNew.jpg";
 import lookbook2 from "../assets/images/rbthree.jpg";
@@ -8,8 +8,18 @@ import lookbook4 from "../assets/images/packImg6.jpg";
 import productImg1 from "../assets/images/rbjay.jpg";
 import productImg2 from "../assets/images/rbmedals.jpg";
 import productImg3 from "../assets/images/rbheadshot.jpg";
+import sbkLogo from "../assets/images/sbk-logo.png";
 
 export default function ShopPage() {
+  const [sloganPhase, setSloganPhase] = useState(0);
+
+  useEffect(() => {
+    // Trigger the animation sequence after reading time
+    const timer = setTimeout(() => {
+      setSloganPhase(1);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const products = [
     {
@@ -97,9 +107,51 @@ export default function ShopPage() {
             </div>
           </div>
 
-          <h2 className="text-xl md:text-2xl font-light text-zinc-300 tracking-wide mt-8 mb-6">
-            <span className="text-orange-500 font-bold">Movement</span> Meets <span className="text-[#4F73FF] font-bold">Culture</span>.
-          </h2>
+          <div className="text-xl md:text-2xl font-light text-zinc-300 tracking-wide mt-8 mb-6 h-10 flex items-center justify-center gap-[0.35rem]">
+            <AnimatePresence mode="popLayout">
+              {sloganPhase === 0 ? (
+                <>
+                  <motion.span
+                    layoutId="movement-word"
+                    className="text-orange-500 font-bold inline-block"
+                  >
+                    Movement
+                  </motion.span>
+                  <motion.span
+                    key="meets-word"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0, scale: 0.5 }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    className="inline-block overflow-hidden whitespace-nowrap"
+                  >
+                    Meets
+                  </motion.span>
+                  <motion.span
+                    layoutId="culture-word"
+                    className="text-[#4F73FF] font-bold inline-block"
+                  >
+                    Culture.
+                  </motion.span>
+                </>
+              ) : (
+                <>
+                  <motion.span
+                    layoutId="culture-word"
+                    className="text-[#4F73FF] font-bold inline-block"
+                  >
+                    Cultural
+                  </motion.span>
+                  <motion.span
+                    layoutId="movement-word"
+                    className="text-orange-500 font-bold inline-block"
+                  >
+                    Movement.
+                  </motion.span>
+                </>
+              )}
+            </AnimatePresence>
+          </div>
           <p className="text-base md:text-lg text-zinc-500 font-light max-w-xl mx-auto mb-10 px-4">
             Made for the run. Built for the lifestyle. An exclusive collection fusing athletic performance with street culture.
           </p>
