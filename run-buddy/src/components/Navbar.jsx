@@ -33,7 +33,7 @@ export default function Navbar() {
           >
             <div className="text-lg md:text-xl">SAVED</div>
             <div className="text-lg md:text-xl">KARLOS</div>
-            <div className="absolute top-[35%] -right-[14px] text-[10px] md:text-xs">by</div>
+            <div className="absolute text-[10px] md:text-xs" style={{ top: 'calc(35% - 30px)', right: '36px' }}>by</div>
           </div>
         )}
         <button className="px-5 py-2.5 bg-orange-500 text-white font-semibold text-sm rounded-full hover:bg-orange-600 transition-colors">
