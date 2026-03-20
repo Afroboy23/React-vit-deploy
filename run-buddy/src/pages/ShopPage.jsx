@@ -9,20 +9,10 @@ import productImg1 from "../assets/images/rbjay.jpg";
 import productImg2 from "../assets/images/rbmedals.jpg";
 import productImg3 from "../assets/images/rbheadshot.jpg";
 
+// Placeholder for the logo - user needs to drop the image here
+import sbkLogo from "../assets/images/sbk-logo.png";
+
 export default function ShopPage() {
-  const marqueeVariants = {
-    animate: {
-      x: [0, -1000],
-      transition: {
-        x: {
-          repeat: Infinity,
-          repeatType: "loop",
-          duration: 25,
-          ease: "linear",
-        },
-      },
-    },
-  };
 
   const products = [
     {
@@ -72,57 +62,57 @@ export default function ShopPage() {
   return (
     <div className="bg-black min-h-screen text-white font-sans overflow-x-hidden selection:bg-orange-500/30">
 
-      {/* 1. HERO COLLABORATION BANNER */}
-      <section className="relative w-full h-[90vh] flex flex-col items-center justify-center overflow-hidden pt-20">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-orange-600/10 rounded-full blur-[140px] mix-blend-screen" />
-          <div className="absolute bottom-1/4 right-1/4 w-[700px] h-[700px] bg-zinc-800/40 rounded-full blur-[150px]" />
-        </div>
+      {/* 1. HERO COLLABORATION BANNER - MINIMALIST */}
+      <section className="relative w-full min-h-[70vh] flex flex-col items-center justify-center overflow-hidden pt-32 pb-20">
+
+        {/* Removed loud blur orbs, keeping it pure black and minimal */}
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
-          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          transition={{ duration: 1.2, ease: [0.25, 1, 0.5, 1] }}
-          className="relative z-10 text-center px-4 max-w-5xl"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: [0.25, 1, 0.5, 1] }}
+          className="relative z-10 text-center px-4 max-w-4xl flex flex-col items-center"
         >
-          <div className="inline-block border border-white/20 px-6 py-2 rounded-full text-xs font-black tracking-[0.3em] uppercase mb-8 bg-zinc-950/50 backdrop-blur-md text-orange-500">
+          <div className="inline-block border border-zinc-800 px-6 py-2 rounded-full text-xs font-medium tracking-[0.2em] uppercase mb-12 text-zinc-400">
             Capsule 01
           </div>
-          <h1 className="text-5xl md:text-8xl font-black tracking-tighter mb-4 leading-none text-white">
-            Run Buddy <br />
-            <span className="text-zinc-500 font-light text-4xl md:text-6xl block my-4">×</span>
-            Saved By Karlos
-          </h1>
-          <h2 className="text-xl md:text-3xl font-light text-orange-500 tracking-tight mt-6 mb-8">
+
+          {/* Logo Lockup */}
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 mb-8 w-full">
+            <h1 className="text-4xl md:text-5xl font-black tracking-tight text-white">
+              Run Buddy
+            </h1>
+            <span className="text-zinc-600 font-light text-2xl md:text-4xl">×</span>
+
+            {/* SAVED BY KARLOS LOGO */}
+            {/* Fallback styling applied so it looks decent if the image fails to load initially */}
+            <div className="h-16 md:h-20 flex items-center justify-center">
+              <img
+                src={sbkLogo}
+                alt="Saved By Karlos"
+                className="h-full object-contain"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  // Fallback text if image isn't saved in assets yet
+                  e.target.outerHTML = '<h1 class="text-4xl md:text-5xl font-black tracking-tight text-[#4F73FF] uppercase" style="font-family: marker felt, comic sans ms, sans-serif;">Saved<br/><span class="text-2xl">by</span> Karlos</h1>';
+                }}
+              />
+            </div>
+          </div>
+
+          <h2 className="text-xl md:text-2xl font-light text-zinc-300 tracking-wide mt-8 mb-6">
             Movement Meets Culture.
           </h2>
-          <p className="text-lg md:text-xl text-zinc-400 font-light max-w-2xl mx-auto mb-12 px-4">
-            Made for the run. Built for the lifestyle. An exclusive collection fusing athletic performance with court culture and streetwear energy.
+          <p className="text-base md:text-lg text-zinc-500 font-light max-w-xl mx-auto mb-10 px-4">
+            Made for the run. Built for the lifestyle. An exclusive collection fusing athletic performance with street culture.
           </p>
-          <button className="px-10 py-5 bg-white text-black hover:bg-orange-500 hover:text-white rounded-full font-black tracking-widest uppercase transition-all shadow-[0_0_40px_rgba(255,255,255,0.1)] hover:shadow-[0_0_50px_rgba(249,115,22,0.4)] hover:scale-105">
+          <button className="px-8 py-4 bg-white text-black hover:bg-zinc-200 rounded-full font-bold tracking-wide transition-all border border-transparent">
             Shop the Drop
           </button>
         </motion.div>
       </section>
 
-      {/* 5. MUSIC & CULTURE ATMOSPHERE (Marquee) */}
-      <div className="w-full bg-orange-600 overflow-hidden py-4 border-y border-orange-500/50 relative z-20 flex">
-        <motion.div
-          className="whitespace-nowrap flex gap-8 items-center"
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ repeat: Infinity, ease: "linear", duration: 20 }}
-        >
-          {/* Double the array length to ensure seamless endless scrolling */}
-          {[...Array(12)].map((_, i) => (
-            <div key={i} className="text-black font-black text-2xl md:text-3xl tracking-widest uppercase flex items-center gap-8">
-              <span>MOVEMENT</span> <span className="w-2 h-2 bg-black rounded-full" />
-              <span>CULTURE</span> <span className="w-2 h-2 bg-black rounded-full" />
-              <span>RHYTHM</span> <span className="w-2 h-2 bg-black rounded-full" />
-              <span>PACE</span> <span className="w-2 h-2 bg-black rounded-full" />
-            </div>
-          ))}
-        </motion.div>
-      </div>
+      {/* MARQUEE REMOVED TO REDUCE LOUDNESS */}
 
       {/* 2. COLLAB STORY BLOCK */}
       <section className="w-full py-40 border-b border-white/5 relative z-10 bg-black">
@@ -283,13 +273,12 @@ export default function ShopPage() {
       </section>
 
       {/* 7. FINAL CALL TO ACTION */}
-      <section className="w-full py-40 bg-zinc-950 relative z-10 flex flex-col items-center justify-center text-center px-6 border-t border-white/5">
-        <div className="absolute inset-0 z-0 bg-gradient-to-t from-orange-600/10 to-transparent pointer-events-none" />
-        <h2 className="relative z-10 text-5xl md:text-8xl font-black tracking-tighter text-white mb-8">
+      <section className="w-full py-32 bg-zinc-950 relative z-10 flex flex-col items-center justify-center text-center px-6 border-t border-white/5">
+        <h2 className="relative z-10 text-4xl md:text-6xl font-medium tracking-tight text-white mb-8">
           Built for Movement.<br />
-          <span className="text-orange-500">Styled for the City.</span>
+          <span className="text-zinc-500">Styled for the City.</span>
         </h2>
-        <button className="relative z-10 px-12 py-6 bg-white text-black hover:bg-orange-500 hover:text-white rounded-full font-black text-xl tracking-widest uppercase transition-all shadow-[0_0_40px_rgba(255,255,255,0.1)] hover:shadow-[0_0_60px_rgba(249,115,22,0.4)] hover:-translate-y-2">
+        <button className="relative z-10 px-8 py-4 bg-white text-black hover:bg-zinc-200 rounded-full font-bold text-lg tracking-wide transition-all border border-transparent">
           Explore the Collab
         </button>
       </section>
