@@ -25,9 +25,16 @@ export default function Navbar() {
           <span className="text-[10px] px-1.5 py-0.5 rounded bg-orange-500/20 text-orange-400 uppercase tracking-wider font-black">Coming Soon</span>
         </Link>
       </div>
-      <button className="px-5 py-2.5 bg-orange-500 text-white font-semibold text-sm rounded-full hover:bg-orange-600 transition-colors">
-        Get a Buddy
-      </button>
+      <div className="flex items-center gap-6">
+        {location.pathname === '/shop' && (
+          <span className="text-[#4F73FF] font-black uppercase tracking-widest text-xs md:text-sm hidden sm:block animate-pulse">
+            Saved By Karlos
+          </span>
+        )}
+        <button className="px-5 py-2.5 bg-orange-500 text-white font-semibold text-sm rounded-full hover:bg-orange-600 transition-colors">
+          Get a Buddy
+        </button>
+      </div>
     </nav>
   );
 }
