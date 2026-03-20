@@ -27,8 +27,11 @@ export default function Navbar() {
       </div>
       <div className="flex items-center gap-6">
         {location.pathname === '/shop' && (
-          <span className="text-[#4F73FF] font-black uppercase tracking-widest text-xs md:text-sm hidden sm:block animate-pulse">
-            Saved By Karlos
+          <span
+            className="text-[#4F73FF] font-black uppercase text-lg md:text-xl hidden sm:block"
+            style={{ fontFamily: "'Marker Felt', 'Comic Sans MS', sans-serif" }}
+          >
+            Saved <span className="text-sm">by</span> Karlos
           </span>
         )}
         <button className="px-5 py-2.5 bg-orange-500 text-white font-semibold text-sm rounded-full hover:bg-orange-600 transition-colors">
