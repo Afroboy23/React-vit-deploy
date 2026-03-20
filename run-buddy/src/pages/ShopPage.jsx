@@ -9,9 +9,6 @@ import productImg1 from "../assets/images/rbjay.jpg";
 import productImg2 from "../assets/images/rbmedals.jpg";
 import productImg3 from "../assets/images/rbheadshot.jpg";
 
-// Placeholder for the logo - user needs to drop the image here
-import sbkLogo from "../assets/images/sbk-logo.png";
-
 export default function ShopPage() {
 
   const products = [
@@ -88,7 +85,7 @@ export default function ShopPage() {
             {/* Fallback styling applied so it looks decent if the image fails to load initially */}
             <div className="h-16 md:h-20 flex items-center justify-center">
               <img
-                src={sbkLogo}
+                src="/src/assets/images/sbk-logo.png"
                 alt="Saved By Karlos"
                 className="h-full object-contain"
                 onError={(e) => {
