@@ -98,7 +98,7 @@ export default function ShopPage() {
           </div>
 
           <h2 className="text-xl md:text-2xl font-light text-zinc-300 tracking-wide mt-8 mb-6">
-            Movement Meets Culture.
+            <span className="text-orange-500 font-bold">Movement</span> Meets <span className="text-[#4F73FF] font-bold">Culture</span>.
           </h2>
           <p className="text-base md:text-lg text-zinc-500 font-light max-w-xl mx-auto mb-10 px-4">
             Made for the run. Built for the lifestyle. An exclusive collection fusing athletic performance with street culture.
