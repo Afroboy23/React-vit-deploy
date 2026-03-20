@@ -91,7 +91,7 @@ export default function ShopPage() {
                 onError={(e) => {
                   e.target.onerror = null;
                   // Fallback text if image isn't saved in assets yet
-                  e.target.outerHTML = '<div class="relative inline-block text-[#4F73FF] uppercase font-black tracking-tight leading-none text-left" style="font-family: marker felt, comic sans ms, sans-serif;"><div class="text-4xl md:text-5xl">SAVED</div><div class="text-4xl md:text-5xl">KARLOS</div><div class="absolute top-[calc(35%-12px)] -right-[20px] text-xl">by</div></div>';
+                  e.target.outerHTML = '<div class="relative inline-block text-[#4F73FF] uppercase font-black tracking-tight leading-none text-left" style="font-family: marker felt, comic sans ms, sans-serif;"><div class="text-4xl md:text-5xl">SAVED</div><div class="text-4xl md:text-5xl">KARLOS</div><div class="absolute top-[calc(35%-12px)] -right-[15px] text-xl">by</div></div>';
                 }}
               />
             </div>
