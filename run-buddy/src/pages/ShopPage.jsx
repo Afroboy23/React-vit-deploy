@@ -8,7 +8,6 @@ import lookbook4 from "../assets/images/packImg6.jpg";
 import productImg1 from "../assets/images/rbjay.jpg";
 import productImg2 from "../assets/images/rbmedals.jpg";
 import productImg3 from "../assets/images/rbheadshot.jpg";
-import sbkLogo from "../assets/images/sbk-logo.png";
 
 export default function ShopPage() {
   const [sloganPhase, setSloganPhase] = useState(0);
