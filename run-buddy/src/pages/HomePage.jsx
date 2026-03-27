@@ -24,7 +24,7 @@ export default function HomePage() {
   const marginTop = useTransform(scrollYProgress, [0, 0.15], ["32px", "0px"]);
 
   return (
-    <div className="w-full">
+    <div className="w-full overflow-x-hidden">
 
 
       {/* Hero Section */}
@@ -76,7 +76,7 @@ export default function HomePage() {
               repeat: Infinity,
               ease: "easeInOut"
             }}
-            className="absolute top-1/2 left-1/2 w-[600px] h-[400px] md:w-[800px] md:h-[600px] bg-orange-600/70 blur-[130px] rounded-full pointer-events-none mix-blend-screen z-0"
+            className="absolute top-1/2 left-1/2 w-[300px] h-[300px] sm:w-[600px] sm:h-[400px] md:w-[800px] md:h-[600px] bg-orange-600/70 blur-[100px] md:blur-[130px] rounded-full pointer-events-none mix-blend-screen z-0"
           />
         </motion.div>
 
@@ -200,7 +200,7 @@ export default function HomePage() {
         </motion.div>
 
         {/* Masonry CSS Grid */}
-        <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 translate-x-[130px]">
+        <div className="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 px-4 md:px-0 translate-x-0 md:translate-x-[130px]">
           {[
             { id: 1, height: "h-64", src: packImg8 },
             { id: 2, height: "h-96", src: packImg2 },
